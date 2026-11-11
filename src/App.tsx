@@ -576,82 +576,77 @@ export default function App() {
   // -------------------------------------------------------------
   if (currentStep !== 'studio' || !currentSong) {
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-['Plus_Jakarta_Sans',sans-serif] selection:bg-amber-500/30 selection:text-amber-200">
-        {/* Navigation Header with 4-Step Stepper */}
-        <header className="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-30">
+      <div className="min-h-screen bg-[#09090b] text-zinc-100 flex flex-col font-['Plus_Jakarta_Sans',sans-serif] selection:bg-zinc-800 selection:text-white">
+        {/* Navigation Header with Minimalist Stepper */}
+        <header className="border-b border-zinc-800/80 bg-[#09090b]/80 backdrop-blur sticky top-0 z-30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-4">
+            {/* Brand Zone */}
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-600 via-red-600 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-600/20 text-white font-bold shrink-0">
-                <Flame className="w-5 h-5 animate-pulse" />
+              <div className="w-8 h-8 rounded-lg bg-zinc-800 border border-zinc-700/80 flex items-center justify-center text-zinc-100 font-semibold shrink-0">
+                <Music className="w-4 h-4 text-zinc-300" />
               </div>
-              <div>
-                <span className="text-[10px] uppercase tracking-widest font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
-                  Telugu & Multilingual AI Transcriber
+              <div className="flex flex-col">
+                <span className="text-sm font-semibold tracking-tight text-zinc-100">
+                  Telugu Audio Transcriber
                 </span>
-                <h1 className="text-base sm:text-lg font-bold text-white tracking-tight">
-                  Song Lyrics & Karaoke Studio
-                </h1>
+                <span className="text-[11px] text-zinc-500 font-mono">
+                  Client-side AI Engine
+                </span>
               </div>
             </div>
 
-            {/* Stepper Navigation Pills */}
-            <nav className="flex items-center gap-1 sm:gap-2 bg-slate-950/80 p-1 rounded-xl border border-slate-800">
+            {/* Stepper Navigation: Linear-Style Segmented Breadcrumbs */}
+            <nav className="flex items-center gap-1 bg-zinc-900/90 p-1 rounded-lg border border-zinc-800/90 text-xs">
               {/* Step 1: Welcome */}
               <button
                 type="button"
                 onClick={() => setCurrentStep('welcome')}
-                className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition cursor-pointer ${
                   currentStep === 'welcome'
-                    ? 'bg-amber-500 text-slate-950 shadow-md font-bold'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    ? 'bg-zinc-800 text-zinc-100 font-semibold shadow-sm border border-zinc-700/60'
+                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40'
                 }`}
               >
-                <span className={`w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-bold ${
-                  currentStep === 'welcome' ? 'bg-slate-950 text-amber-400' : 'bg-slate-800 text-slate-300'
-                }`}>1</span>
+                <span className="font-mono text-[10px] text-zinc-500">01</span>
                 <span>Welcome</span>
               </button>
 
-              <ChevronRight className="w-3.5 h-3.5 text-slate-600 hidden sm:inline" />
+              <span className="text-zinc-700 hidden sm:inline select-none">/</span>
 
               {/* Step 2: API Key */}
               <button
                 type="button"
                 onClick={() => setCurrentStep('apikey')}
-                className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition cursor-pointer ${
                   currentStep === 'apikey'
-                    ? 'bg-amber-500 text-slate-950 shadow-md font-bold'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    ? 'bg-zinc-800 text-zinc-100 font-semibold shadow-sm border border-zinc-700/60'
+                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40'
                 }`}
               >
-                <span className={`w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-bold ${
-                  currentStep === 'apikey' ? 'bg-slate-950 text-amber-400' : 'bg-slate-800 text-slate-300'
-                }`}>2</span>
+                <span className="font-mono text-[10px] text-zinc-500">02</span>
                 <span>API Key</span>
                 {userApiKey && (
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" title="API Key Active" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" title="API Key Connected" />
                 )}
               </button>
 
-              <ChevronRight className="w-3.5 h-3.5 text-slate-600 hidden sm:inline" />
+              <span className="text-zinc-700 hidden sm:inline select-none">/</span>
 
               {/* Step 3: Upload & Live Log */}
               <button
                 type="button"
                 onClick={() => setCurrentStep('upload')}
-                className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition cursor-pointer ${
                   currentStep === 'upload'
-                    ? 'bg-amber-500 text-slate-950 shadow-md font-bold'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    ? 'bg-zinc-800 text-zinc-100 font-semibold shadow-sm border border-zinc-700/60'
+                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40'
                 }`}
               >
-                <span className={`w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-bold ${
-                  currentStep === 'upload' ? 'bg-slate-950 text-amber-400' : 'bg-slate-800 text-slate-300'
-                }`}>3</span>
+                <span className="font-mono text-[10px] text-zinc-500">03</span>
                 <span>Upload & Log</span>
               </button>
 
-              <ChevronRight className="w-3.5 h-3.5 text-slate-600 hidden sm:inline" />
+              <span className="text-zinc-700 hidden sm:inline select-none">/</span>
 
               {/* Step 4: Studio */}
               <button
@@ -663,22 +658,20 @@ export default function App() {
                     loadDemoSong();
                   }
                 }}
-                className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition cursor-pointer ${
                   currentStep === 'studio'
-                    ? 'bg-amber-500 text-slate-950 shadow-md font-bold'
+                    ? 'bg-zinc-800 text-zinc-100 font-semibold shadow-sm border border-zinc-700/60'
                     : currentSong
-                    ? 'text-slate-400 hover:text-white hover:bg-slate-800'
-                    : 'text-slate-600 hover:text-slate-400'
+                    ? 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40'
+                    : 'text-zinc-600 hover:text-zinc-400'
                 }`}
               >
-                <span className={`w-4 h-4 rounded-full text-[10px] flex items-center justify-center font-bold ${
-                  currentStep === 'studio' ? 'bg-slate-950 text-amber-400' : 'bg-slate-800 text-slate-300'
-                }`}>4</span>
+                <span className="font-mono text-[10px] text-zinc-500">04</span>
                 <span>Studio</span>
               </button>
             </nav>
 
-            {/* Quick Status Pill */}
+            {/* Quick Status / Actions */}
             <div className="flex items-center gap-2">
               <button
                 type="button"
@@ -686,18 +679,14 @@ export default function App() {
                   setApiKeyInput(userApiKey);
                   setCurrentStep('apikey');
                 }}
-                className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl border transition cursor-pointer ${
-                  userApiKey
-                    ? 'bg-emerald-950/60 hover:bg-emerald-900/60 text-emerald-300 border-emerald-800/80'
-                    : 'bg-amber-950/60 hover:bg-amber-900/60 text-amber-300 border-amber-800/80'
-                }`}
+                className="flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-md border border-zinc-800 bg-zinc-900/60 hover:bg-zinc-800 text-zinc-300 transition cursor-pointer"
               >
-                <Key className="w-3.5 h-3.5 text-amber-400" />
+                <Key className="w-3.5 h-3.5 text-zinc-400" />
                 <span className="hidden md:inline">
-                  {userApiKey ? 'API Key Active' : 'Set API Key'}
+                  {userApiKey ? 'API Key Active' : 'Setup Key'}
                 </span>
                 {userApiKey && (
-                  <span className="font-mono text-[10px] text-emerald-400 bg-emerald-500/10 px-1 rounded">
+                  <span className="font-mono text-[10px] text-emerald-400 bg-emerald-500/10 px-1 py-0.5 rounded">
                     {userApiKey.slice(0, 4)}••
                   </span>
                 )}
@@ -710,11 +699,11 @@ export default function App() {
                     setActiveSongId(songs[0].id);
                     setCurrentStep('studio');
                   }}
-                  className="flex items-center gap-1.5 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1.5 rounded-xl transition cursor-pointer"
+                  className="flex items-center gap-1.5 text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 px-2.5 py-1.5 rounded-md transition cursor-pointer"
                 >
-                  <FolderOpen className="w-4 h-4 text-amber-400" />
+                  <FolderOpen className="w-3.5 h-3.5 text-zinc-400" />
                   <span className="hidden sm:inline">Library</span>
-                  <span>({songs.length})</span>
+                  <span className="font-mono tabular-nums">({songs.length})</span>
                 </button>
               )}
             </div>
@@ -722,45 +711,40 @@ export default function App() {
         </header>
 
         {/* ========================================================= */}
-        {/* STEP 1: WELCOME PAGE                                      */}
+        {/* STEP 1: WELCOME PAGE (Linear/Vercel Minimalist Aesthetic)  */}
         {/* ========================================================= */}
         {currentStep === 'welcome' && (
-          <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-10 flex flex-col justify-center space-y-10 animate-fadeIn">
-            {/* Hero Banner */}
-            <div className="text-center space-y-4">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold shadow-inner">
-                <Sparkles className="w-3.5 h-3.5 animate-spin" />
-                <span>Step 1 • Welcome to the Transcriber</span>
+          <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-14 flex flex-col justify-center space-y-12">
+            {/* Hero Section */}
+            <div className="text-center space-y-4 max-w-3xl mx-auto">
+              <div className="text-xs font-mono text-zinc-400 tracking-wider">
+                AUDIO INTELLIGENCE · 100% IN-BROWSER PRIVACY
               </div>
 
-              <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-                Welcome to the{' '}
-                <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-red-500 bg-clip-text text-transparent">
-                  Song Lyrics & Pitch Transcriber
-                </span>
+              <h2 className="text-4xl sm:text-6xl font-bold text-zinc-100 tracking-tight leading-tight">
+                Studio-grade lyrics transcription and vocal pitch analysis.
               </h2>
 
-              <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
-                Transcribe any Telugu, Hindi, or multilingual song track directly inside your browser. Generate millisecond-precise timestamps (mm:ss.s), dual Telugu script & Romanized phonetics, voice pitch contour tracking, and interactive karaoke.
+              <p className="text-sm sm:text-base text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+                Transcribe Telugu, Hindi, and multilingual audio tracks directly in local browser memory. Extract decimal millisecond timestamps (mm:ss.s), dual Telugu script and phonetic transliteration, real-time vocal pitch tracking, and universal subtitle exports.
               </p>
 
-              {/* Primary Call to Action Buttons */}
-              <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+              {/* Primary Action Buttons */}
+              <div className="flex flex-wrap items-center justify-center gap-3 pt-3">
                 <button
                   type="button"
                   onClick={() => setCurrentStep('apikey')}
-                  className="py-3.5 px-7 rounded-xl font-bold text-sm bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 transition-all shadow-xl shadow-amber-500/25 cursor-pointer flex items-center gap-2 active:scale-98"
+                  className="py-2.5 px-5 rounded-lg font-semibold text-xs sm:text-sm bg-zinc-100 hover:bg-white text-zinc-950 transition-all shadow-sm cursor-pointer flex items-center gap-2"
                 >
-                  <span>Get Started (Step 2: API Key)</span>
+                  <span>Connect API Key (Step 2)</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
 
                 <button
                   type="button"
                   onClick={loadDemoSong}
-                  className="py-3.5 px-6 rounded-xl text-xs sm:text-sm font-semibold bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 transition cursor-pointer flex items-center gap-2"
+                  className="py-2.5 px-4 rounded-lg text-xs sm:text-sm font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 transition cursor-pointer flex items-center gap-2"
                 >
-                  <Flame className="w-4 h-4 text-amber-400" />
                   <span>Try Demo Song (Veera Veera)</span>
                 </button>
 
@@ -771,78 +755,73 @@ export default function App() {
                       setActiveSongId(songs[0].id);
                       setCurrentStep('studio');
                     }}
-                    className="py-3.5 px-6 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-950/60 hover:bg-emerald-900/60 text-emerald-300 border border-emerald-800/70 transition cursor-pointer flex items-center gap-2"
+                    className="py-2.5 px-4 rounded-lg text-xs sm:text-sm font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 transition cursor-pointer flex items-center gap-2"
                   >
-                    <FolderOpen className="w-4 h-4 text-emerald-400" />
-                    <span>Open My Library ({songs.length})</span>
+                    <FolderOpen className="w-4 h-4 text-zinc-400" />
+                    <span>Open Library ({songs.length})</span>
                   </button>
                 )}
               </div>
             </div>
 
-            {/* 4-Step Interactive Workflow Roadmap */}
-            <div className="rounded-2xl bg-slate-900/60 border border-slate-800 p-6 space-y-4 shadow-xl">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-400">
-                  <Activity className="w-4 h-4" />
-                  <span>How It Works in 4 Steps</span>
-                </div>
-                <span className="text-[11px] text-emerald-400 bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-800/60">
-                  100% In-Browser Privacy
-                </span>
+            {/* Linear-Style 4-Step Architecture Strip */}
+            <div className="rounded-xl bg-zinc-900/30 border border-zinc-800/80 p-5 space-y-4">
+              <div className="flex items-center justify-between text-xs text-zinc-400">
+                <span className="font-semibold text-zinc-200">System Pipeline</span>
+                <span className="font-mono text-[11px] text-zinc-500">Client-Side Sandbox Execution</span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {/* Step 1 Box */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                {/* Step 1 */}
                 <div
                   onClick={() => setCurrentStep('welcome')}
-                  className="p-4 rounded-xl bg-amber-500/10 border-2 border-amber-500/60 cursor-pointer space-y-2 transition hover:bg-amber-500/15"
+                  className="p-4 rounded-lg bg-zinc-800/50 border border-zinc-700/60 cursor-pointer space-y-1.5 transition hover:bg-zinc-800/70"
                 >
-                  <div className="flex items-center justify-between text-xs font-bold text-amber-400">
-                    <span>STEP 1</span>
-                    <span className="text-[10px] bg-amber-500/20 px-2 py-0.5 rounded-full font-bold">Current</span>
+                  <div className="flex items-center justify-between text-[11px] font-mono text-zinc-400">
+                    <span>PHASE 01</span>
+                    <span className="text-zinc-200 font-medium">Active</span>
                   </div>
-                  <h4 className="font-bold text-white text-sm">Welcome & Overview</h4>
-                  <p className="text-slate-400 text-xs leading-relaxed">
-                    Explore features, audio capabilities, and karaoke stage modes.
+                  <h4 className="font-semibold text-white text-sm">System Overview</h4>
+                  <p className="text-zinc-400 text-xs leading-relaxed">
+                    Overview of audio capabilities, privacy guarantees, and studio tools.
                   </p>
                 </div>
 
-                {/* Step 2 Box */}
+                {/* Step 2 */}
                 <div
                   onClick={() => setCurrentStep('apikey')}
-                  className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-amber-500/40 cursor-pointer space-y-2 transition hover:bg-slate-900/60"
+                  className="p-4 rounded-lg bg-zinc-900/40 border border-zinc-800 hover:border-zinc-700 cursor-pointer space-y-1.5 transition hover:bg-zinc-900/70"
                 >
-                  <div className="flex items-center justify-between text-xs font-bold text-slate-400">
-                    <span>STEP 2</span>
+                  <div className="flex items-center justify-between text-[11px] font-mono text-zinc-500">
+                    <span>PHASE 02</span>
                     {userApiKey ? (
-                      <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full">Ready</span>
+                      <span className="text-emerald-400 font-medium">Connected</span>
                     ) : (
-                      <span className="text-[10px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full">Required</span>
+                      <span className="text-zinc-400">Required</span>
                     )}
                   </div>
-                  <h4 className="font-bold text-white text-sm">Set Gemini API Key</h4>
-                  <p className="text-slate-400 text-xs leading-relaxed">
-                    Paste your free Google AI Studio key. Stored only in local browser memory.
+                  <h4 className="font-semibold text-white text-sm">Gemini API Key</h4>
+                  <p className="text-zinc-400 text-xs leading-relaxed">
+                    Saved in browser localStorage. Audio never touches external servers.
                   </p>
                 </div>
 
-                {/* Step 3 Box */}
+                {/* Step 3 */}
                 <div
                   onClick={() => setCurrentStep('upload')}
-                  className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-amber-500/40 cursor-pointer space-y-2 transition hover:bg-slate-900/60"
+                  className="p-4 rounded-lg bg-zinc-900/40 border border-zinc-800 hover:border-zinc-700 cursor-pointer space-y-1.5 transition hover:bg-zinc-900/70"
                 >
-                  <div className="flex items-center justify-between text-xs font-bold text-slate-400">
-                    <span>STEP 3</span>
-                    <span className="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full">Upload & Log</span>
+                  <div className="flex items-center justify-between text-[11px] font-mono text-zinc-500">
+                    <span>PHASE 03</span>
+                    <span className="text-zinc-500">Upload & Log</span>
                   </div>
-                  <h4 className="font-bold text-white text-sm">Upload & Live Log</h4>
-                  <p className="text-slate-400 text-xs leading-relaxed">
-                    Select your audio track and watch real-time scrolling output events.
+                  <h4 className="font-semibold text-white text-sm">Audio & Live Log</h4>
+                  <p className="text-zinc-400 text-xs leading-relaxed">
+                    Select audio track and stream real-time transcription events in the terminal.
                   </p>
                 </div>
 
-                {/* Step 4 Box */}
+                {/* Step 4 */}
                 <div
                   onClick={() => {
                     if (currentSong) {
@@ -851,104 +830,104 @@ export default function App() {
                       loadDemoSong();
                     }
                   }}
-                  className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-amber-500/40 cursor-pointer space-y-2 transition hover:bg-slate-900/60"
+                  className="p-4 rounded-lg bg-zinc-900/40 border border-zinc-800 hover:border-zinc-700 cursor-pointer space-y-1.5 transition hover:bg-zinc-900/70"
                 >
-                  <div className="flex items-center justify-between text-xs font-bold text-slate-400">
-                    <span>STEP 4</span>
-                    <span className="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded-full">Studio</span>
+                  <div className="flex items-center justify-between text-[11px] font-mono text-zinc-500">
+                    <span>PHASE 04</span>
+                    <span className="text-zinc-500">Studio</span>
                   </div>
-                  <h4 className="font-bold text-white text-sm">Lyrics & Pitch Studio</h4>
-                  <p className="text-slate-400 text-xs leading-relaxed">
-                    Interactive synchronized player, pitch graph, teleprompter, and subtitles.
+                  <h4 className="font-semibold text-white text-sm">Lyrics Studio</h4>
+                  <p className="text-zinc-400 text-xs leading-relaxed">
+                    Synchronized audio player, pitch contour graph, teleprompter, and editor.
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Feature Highlights Grid */}
+            {/* Capabilities Grid: 3x2 Clean Cards */}
             <div className="space-y-4">
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-amber-400" />
-                <span>Superpowers & Capabilities</span>
-              </h3>
+              <div className="flex items-center justify-between text-xs text-zinc-400">
+                <span className="font-semibold text-zinc-200">Engine Capabilities</span>
+                <span className="text-zinc-500">Precision Audio Processing</span>
+              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 text-xs">
                 {/* 1. Privacy */}
-                <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 space-y-2.5 hover:border-amber-500/30 transition">
-                  <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
-                    <ShieldCheck className="w-5 h-5" />
+                <div className="p-5 rounded-xl bg-zinc-900/40 border border-zinc-800/80 space-y-2 hover:border-zinc-700/80 transition-colors">
+                  <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-zinc-200">
+                    <ShieldCheck className="w-4 h-4" />
                   </div>
-                  <h4 className="font-bold text-white text-sm">100% In-Browser Privacy</h4>
-                  <p className="text-slate-400 leading-relaxed">
-                    Your audio track is loaded into local memory (`URL.createObjectURL`). It is never sent to third-party file servers.
+                  <h4 className="font-semibold text-zinc-100 text-sm">Local Memory Privacy</h4>
+                  <p className="text-zinc-400 leading-relaxed">
+                    Audio stays in browser memory (`URL.createObjectURL`). Files are never uploaded to intermediate storage buckets.
                   </p>
                 </div>
 
-                {/* 2. mm:ss.s Timestamps */}
-                <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 space-y-2.5 hover:border-amber-500/30 transition">
-                  <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
-                    <Clock className="w-5 h-5" />
+                {/* 2. Timestamps */}
+                <div className="p-5 rounded-xl bg-zinc-900/40 border border-zinc-800/80 space-y-2 hover:border-zinc-700/80 transition-colors">
+                  <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-zinc-200">
+                    <Clock className="w-4 h-4" />
                   </div>
-                  <h4 className="font-bold text-white text-sm">Exact mm:ss.s Timestamps</h4>
-                  <p className="text-slate-400 leading-relaxed">
-                    Decimal millisecond precision for every line. Jump anywhere, loop individual lines, and sing in sync.
+                  <h4 className="font-semibold text-zinc-100 text-sm">Decimal Millisecond Accuracy</h4>
+                  <p className="text-zinc-400 leading-relaxed">
+                    Line start and end boundaries mapped in `mm:ss.s` format for sub-second subtitle synchronization.
                   </p>
                 </div>
 
-                {/* 3. Telugu & Romanized */}
-                <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 space-y-2.5 hover:border-amber-500/30 transition">
-                  <div className="w-9 h-9 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400">
-                    <Mic2 className="w-5 h-5" />
+                {/* 3. Dual Scripts */}
+                <div className="p-5 rounded-xl bg-zinc-900/40 border border-zinc-800/80 space-y-2 hover:border-zinc-700/80 transition-colors">
+                  <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-zinc-200">
+                    <FileText className="w-4 h-4" />
                   </div>
-                  <h4 className="font-bold text-white text-sm">Telugu & Romanized Script</h4>
-                  <p className="text-slate-400 leading-relaxed">
-                    Native Telugu lipi alongside phonetic Romanized English, word breakdowns, and lyrical translations.
+                  <h4 className="font-semibold text-zinc-100 text-sm">Dual Telugu & Romanized</h4>
+                  <p className="text-zinc-400 leading-relaxed">
+                    Full native script paired with phonetic Latin transliteration, word breakdowns, and contextual translation.
                   </p>
                 </div>
 
-                {/* 4. Voice Pitch Graph */}
-                <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 space-y-2.5 hover:border-amber-500/30 transition">
-                  <div className="w-9 h-9 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
-                    <Activity className="w-5 h-5" />
+                {/* 4. Pitch Graph */}
+                <div className="p-5 rounded-xl bg-zinc-900/40 border border-zinc-800/80 space-y-2 hover:border-zinc-700/80 transition-colors">
+                  <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-zinc-200">
+                    <Activity className="w-4 h-4" />
                   </div>
-                  <h4 className="font-bold text-white text-sm">Voice Pitch Contour Graph</h4>
-                  <p className="text-slate-400 leading-relaxed">
-                    Real-time vocal pitch trajectory, musical scale notes (C3–C5), and live microphone sing-along score.
+                  <h4 className="font-semibold text-zinc-100 text-sm">Voice Pitch Contour</h4>
+                  <p className="text-zinc-400 leading-relaxed">
+                    Real-time fundamental frequency ($f_0$) tracking across musical octaves with microphone sing-along score.
                   </p>
                 </div>
 
-                {/* 5. Timestamp Editor */}
-                <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 space-y-2.5 hover:border-amber-500/30 transition">
-                  <div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
-                    <Edit3 className="w-5 h-5" />
+                {/* 5. Timing Editor */}
+                <div className="p-5 rounded-xl bg-zinc-900/40 border border-zinc-800/80 space-y-2 hover:border-zinc-700/80 transition-colors">
+                  <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-zinc-200">
+                    <Edit3 className="w-4 h-4" />
                   </div>
-                  <h4 className="font-bold text-white text-sm">Interactive Timing Editor</h4>
-                  <p className="text-slate-400 leading-relaxed">
-                    Nudge timings ±0.1s or ±0.5s, customize Telugu lyrics, insert lines, and mark instrumental solos.
+                  <h4 className="font-semibold text-zinc-100 text-sm">Timing & Script Editor</h4>
+                  <p className="text-zinc-400 leading-relaxed">
+                    Interactive timing workbench to nudge cues by ±0.1s or ±0.5s, correct spellings, and mark instrumental solos.
                   </p>
                 </div>
 
-                {/* 6. Subtitle Converter & Stage */}
-                <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 space-y-2.5 hover:border-amber-500/30 transition">
-                  <div className="w-9 h-9 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-400">
-                    <Download className="w-5 h-5" />
+                {/* 6. Subtitle Exports */}
+                <div className="p-5 rounded-xl bg-zinc-900/40 border border-zinc-800/80 space-y-2 hover:border-zinc-700/80 transition-colors">
+                  <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-zinc-200">
+                    <Download className="w-4 h-4" />
                   </div>
-                  <h4 className="font-bold text-white text-sm">Multi-Format Exports & Stage</h4>
-                  <p className="text-slate-400 leading-relaxed">
-                    Export .SRT, .LRC synced lyrics, .TXT, or copy Markdown. Open fullscreen concert teleprompter stage.
+                  <h4 className="font-semibold text-zinc-100 text-sm">Universal Subtitle Exports</h4>
+                  <p className="text-zinc-400 leading-relaxed">
+                    Export standard `.SRT` movie subtitles, `.LRC` synced karaoke files, plain text, and Markdown tables.
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Bottom Proceed CTA */}
+            {/* Bottom CTA */}
             <div className="text-center pt-2">
               <button
                 type="button"
                 onClick={() => setCurrentStep('apikey')}
-                className="inline-flex items-center gap-2 py-3.5 px-8 rounded-xl font-bold text-sm bg-gradient-to-r from-amber-500 via-orange-500 to-amber-400 hover:from-amber-400 hover:to-orange-400 text-slate-950 transition shadow-lg shadow-amber-500/20 cursor-pointer"
+                className="inline-flex items-center gap-2 py-2.5 px-6 rounded-lg font-semibold text-xs sm:text-sm bg-zinc-100 hover:bg-white text-zinc-950 transition cursor-pointer shadow-sm"
               >
-                <span>Continue to Step 2: Connect API Key</span>
+                <span>Proceed to Step 2: API Key</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -956,68 +935,50 @@ export default function App() {
         )}
 
         {/* ========================================================= */}
-        {/* STEP 2: API KEY PAGE                                      */}
+        {/* STEP 2: API KEY PAGE (Stripe/Vercel Settings Aesthetic)   */}
         {/* ========================================================= */}
         {currentStep === 'apikey' && (
-          <main className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-10 flex flex-col justify-center space-y-8 animate-fadeIn">
-            {/* Header */}
-            <div className="text-center space-y-3">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold">
-                <Key className="w-3.5 h-3.5" />
-                <span>Step 2 • Connect Google Gemini API Key</span>
+          <main className="flex-1 max-w-2xl w-full mx-auto px-4 sm:px-6 py-12 flex flex-col justify-center space-y-6">
+            <div className="space-y-1">
+              <div className="text-xs font-mono text-zinc-500 uppercase tracking-wider">
+                STEP 02 · CREDENTIALS
               </div>
-              <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-                Enter Your Gemini API Key
+              <h2 className="text-2xl sm:text-3xl font-bold text-zinc-100 tracking-tight">
+                Connect Google Gemini API Key
               </h2>
-              <p className="text-xs sm:text-sm text-slate-400 max-w-xl mx-auto leading-relaxed">
-                To guarantee zero latency, unlimited songs, and complete audio privacy, audio analysis runs directly from your browser to Google Gemini.
+              <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                Audio processing runs directly from your browser to Google Gemini. Your key is stored solely in local browser memory (`localStorage`).
               </p>
             </div>
 
-            {/* API Key Box */}
-            <div className="rounded-2xl bg-gradient-to-br from-amber-950/40 via-slate-900 to-slate-900/90 border-2 border-amber-500/50 shadow-2xl p-6 sm:p-8 space-y-6">
-              {/* Privacy Guarantee Pill */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-800">
-                <div className="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider">
-                  <ShieldCheck className="w-4 h-4" />
-                  <span>Stored 100% in Browser LocalStorage</span>
-                </div>
-                <div className="flex items-center gap-1.5 text-[11px] text-emerald-400 bg-emerald-950/80 border border-emerald-800/60 px-2.5 py-1 rounded-full w-fit">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>Audio & Keys Never Saved On External Servers</span>
-                </div>
-              </div>
-
-              {/* Status Card if key is already active */}
+            {/* Key Settings Card */}
+            <div className="rounded-xl bg-zinc-900/50 border border-zinc-800/80 p-6 space-y-5">
+              {/* Active Key Status Card */}
               {userApiKey ? (
-                <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
-                      <Check className="w-4 h-4" />
-                    </div>
+                <div className="p-3.5 rounded-lg bg-zinc-950 border border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                  <div className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
                     <div>
-                      <div className="font-bold text-white flex items-center gap-2">
-                        <span>Active Key Configured:</span>
-                        <span className="font-mono text-emerald-400">{userApiKey.slice(0, 6)}••••••••••••</span>
+                      <div className="font-semibold text-zinc-100 flex items-center gap-2">
+                        <span>Key Connected</span>
+                        <span className="font-mono text-zinc-400 text-[11px]">{userApiKey.slice(0, 6)}••••••••••••</span>
                       </div>
-                      <p className="text-slate-400 text-[11px]">Ready to transcribe songs directly in Step 3.</p>
+                      <p className="text-zinc-500 text-[11px]">Stored locally in browser storage.</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 shrink-0">
+                  <div className="flex items-center gap-1.5 shrink-0">
                     <button
                       type="button"
-                      onClick={() => {
-                        setApiKeyInput(userApiKey);
-                      }}
-                      className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-xs font-semibold transition cursor-pointer"
+                      onClick={() => setApiKeyInput(userApiKey)}
+                      className="px-2.5 py-1 rounded-md bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-medium transition cursor-pointer"
                     >
                       Edit Key
                     </button>
                     <button
                       type="button"
                       onClick={handleClearApiKey}
-                      className="px-3 py-1.5 rounded-lg bg-red-950/60 hover:bg-red-900/60 text-red-300 border border-red-800/80 text-xs font-semibold transition cursor-pointer"
+                      className="px-2.5 py-1 rounded-md bg-zinc-800 hover:bg-red-950/60 text-zinc-400 hover:text-red-400 text-xs font-medium transition cursor-pointer"
                     >
                       Clear
                     </button>
@@ -1025,7 +986,7 @@ export default function App() {
                 </div>
               ) : null}
 
-              {/* Form to enter/update key */}
+              {/* Form */}
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -1035,10 +996,9 @@ export default function App() {
                 }}
                 className="space-y-4"
               >
-                <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
-                    <Key className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Paste Google Gemini API Key</span>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-zinc-300">
+                    Google Gemini API Key
                   </label>
 
                   <div className="relative">
@@ -1049,13 +1009,13 @@ export default function App() {
                         setApiKeyInput(e.target.value);
                         setApiKeyError(null);
                       }}
-                      placeholder={userApiKey ? 'Enter new key to update, or keep existing' : 'Paste your Gemini API key (AIzaSy...)'}
-                      className="w-full bg-slate-950/90 border border-slate-700 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 rounded-xl px-4 py-3.5 text-xs sm:text-sm text-white placeholder-slate-500 outline-none pr-11 font-mono tracking-wide"
+                      placeholder={userApiKey ? 'Enter new key to update, or keep existing' : 'AIzaSy...'}
+                      className="w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 rounded-lg px-3.5 py-2.5 text-xs sm:text-sm text-zinc-100 placeholder-zinc-600 outline-none pr-10 font-mono"
                     />
                     <button
                       type="button"
                       onClick={() => setShowApiKey(!showApiKey)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white cursor-pointer"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 cursor-pointer"
                       title={showApiKey ? 'Hide key' : 'Show key'}
                     >
                       {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -1063,46 +1023,41 @@ export default function App() {
                   </div>
 
                   {apiKeyError && (
-                    <p className="text-xs text-red-400 flex items-center gap-1.5 font-medium pt-1">
+                    <p className="text-xs text-red-400 flex items-center gap-1.5 pt-0.5">
                       <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                       <span>{apiKeyError}</span>
                     </p>
                   )}
                 </div>
 
-                {/* Free Key Instructions Box */}
-                <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-2 text-xs">
+                {/* Free Key Helper Box */}
+                <div className="p-3.5 rounded-lg bg-zinc-950/60 border border-zinc-800/80 text-xs space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-amber-400 flex items-center gap-1.5">
-                      <Info className="w-3.5 h-3.5" />
-                      Don't have a Gemini API key yet?
-                    </span>
+                    <span className="font-medium text-zinc-300">Need a free Gemini key?</span>
                     <a
                       href="https://aistudio.google.com/app/apikey"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-amber-400 hover:text-amber-300 font-semibold underline inline-flex items-center gap-1 text-xs"
+                      className="text-zinc-300 hover:text-white font-medium underline inline-flex items-center gap-1 text-xs"
                     >
-                      <span>Get Free Key (Google AI Studio)</span>
+                      <span>Google AI Studio</span>
                       <ExternalLink className="w-3 h-3" />
                     </a>
                   </div>
-                  <p className="text-slate-400 text-[11px] leading-relaxed">
-                    1. Open Google AI Studio with your Google account. <br />
-                    2. Click "Create API Key" → Copy the key (starts with <code className="text-amber-300 font-mono">AIzaSy...</code>). <br />
-                    3. Paste it above. It is 100% free and no credit card is required.
+                  <p className="text-zinc-500 text-[11px] leading-relaxed">
+                    Keys are free, take 30 seconds to generate with any Google account, and require no credit card.
                   </p>
                 </div>
 
-                {/* Form Buttons */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2">
+                {/* Actions */}
+                <div className="flex items-center justify-between gap-3 pt-2">
                   <button
                     type="button"
                     onClick={() => setCurrentStep('welcome')}
-                    className="py-3 px-5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition cursor-pointer flex items-center justify-center gap-1.5"
+                    className="py-2 px-3.5 rounded-lg text-xs font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition cursor-pointer flex items-center gap-1.5"
                   >
                     <ArrowLeft className="w-3.5 h-3.5" />
-                    <span>Back to Welcome (Step 1)</span>
+                    <span>Back to Overview</span>
                   </button>
 
                   <div className="flex items-center gap-2">
@@ -1110,18 +1065,18 @@ export default function App() {
                       <button
                         type="button"
                         onClick={() => setCurrentStep('upload')}
-                        className="flex-1 sm:flex-none py-3 px-6 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 transition shadow-lg shadow-emerald-500/20 cursor-pointer flex items-center justify-center gap-2"
+                        className="py-2 px-4 rounded-lg font-semibold text-xs bg-zinc-100 hover:bg-white text-zinc-950 transition shadow-sm cursor-pointer flex items-center gap-1.5"
                       >
-                        <span>Continue to Step 3: Upload</span>
-                        <ArrowRight className="w-4 h-4" />
+                        <span>Continue to Step 3</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                     ) : (
                       <button
                         type="submit"
-                        className="flex-1 sm:flex-none py-3 px-6 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-amber-500 via-orange-500 to-amber-400 hover:from-amber-400 hover:to-orange-400 text-slate-950 transition shadow-lg shadow-amber-500/20 cursor-pointer flex items-center justify-center gap-2"
+                        className="py-2 px-4 rounded-lg font-semibold text-xs bg-zinc-100 hover:bg-white text-zinc-950 transition shadow-sm cursor-pointer flex items-center gap-1.5"
                       >
-                        <CheckCircle2 className="w-4 h-4" />
-                        <span>Save Key & Next: Upload Track</span>
+                        <Check className="w-3.5 h-3.5" />
+                        <span>Save Key & Next</span>
                       </button>
                     )}
                   </div>
@@ -1129,91 +1084,70 @@ export default function App() {
               </form>
             </div>
 
-            {/* Quick Demo Option */}
-            <div className="text-center">
+            <div className="text-center pt-1">
               <button
                 type="button"
                 onClick={loadDemoSong}
-                className="text-xs text-slate-400 hover:text-amber-400 transition underline cursor-pointer inline-flex items-center gap-1.5"
+                className="text-xs text-zinc-500 hover:text-zinc-300 transition underline cursor-pointer"
               >
-                <Flame className="w-3.5 h-3.5 text-amber-400" />
-                <span>Want to test without an API key? Try the built-in "Veera Veera" Demo track →</span>
+                Skip key setup and test with "Veera Veera" Demo Song →
               </button>
             </div>
           </main>
         )}
 
         {/* ========================================================= */}
-        {/* STEP 3: UPLOAD & LIVE SCROLLING CONSOLE PAGE              */}
+        {/* STEP 3: UPLOAD & LIVE CONSOLE (Vercel Log Stream Style)   */}
         {/* ========================================================= */}
         {currentStep === 'upload' && (
-          <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 flex flex-col justify-center space-y-6 animate-fadeIn">
-            {/* Header */}
-            <div className="text-center space-y-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold">
-                <Upload className="w-3.5 h-3.5" />
-                <span>Step 3 • Audio Upload & Live Console Output</span>
+          <main className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-8 flex flex-col justify-center space-y-6">
+            <div className="space-y-1">
+              <div className="text-xs font-mono text-zinc-500 uppercase tracking-wider">
+                STEP 03 · AUDIO PIPELINE
               </div>
-              <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
-                Upload Song & Watch Live Output
+              <h2 className="text-2xl sm:text-3xl font-bold text-zinc-100 tracking-tight">
+                Upload Song Track & Stream Execution
               </h2>
-              <p className="text-xs sm:text-sm text-slate-400 max-w-xl mx-auto">
-                Select your song file. Watch the live console below auto-scroll as Gemini extracts Telugu lyrics, isolates instrumental breaks, and maps timestamps.
+              <p className="text-xs sm:text-sm text-zinc-400">
+                Select your audio file. The terminal below auto-scrolls live output events as Gemini extracts lyrics, detects vocal pitches, and aligns timestamps.
               </p>
             </div>
 
             {/* Error Banner */}
             {errorMessage && (
-              <div className="p-4 rounded-xl bg-red-950/60 border border-red-800/80 text-xs text-red-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-lg">
-                <div className="flex items-start gap-2.5">
+              <div className="p-3.5 rounded-lg bg-red-950/30 border border-red-800/60 text-xs text-red-300 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="flex items-start gap-2">
                   <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-                  <div className="leading-relaxed">{errorMessage}</div>
+                  <div>{errorMessage}</div>
                 </div>
                 {selectedFile && !isProcessing && (
                   <button
                     type="button"
                     onClick={handleUploadFile}
-                    className="shrink-0 px-3.5 py-1.5 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition shadow cursor-pointer flex items-center gap-1.5"
+                    className="shrink-0 px-3 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-medium transition cursor-pointer"
                   >
-                    <RefreshCw className="w-3.5 h-3.5" />
-                    <span>Retry Transcription</span>
+                    Retry Transcription
                   </button>
                 )}
               </div>
             )}
 
             {/* Audio Dropzone Box */}
-            <div className="rounded-2xl bg-gradient-to-b from-slate-900 to-slate-900/70 border border-slate-800 shadow-xl p-5 sm:p-6 space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-300">
-                  <Music className="w-4 h-4 text-amber-400" />
-                  <span>Audio Track Dropzone</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  {userApiKey ? (
-                    <span className="text-[11px] text-emerald-400 font-mono bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800/60">
-                      Key Active: {userApiKey.slice(0, 4)}••
-                    </span>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => setCurrentStep('apikey')}
-                      className="text-[11px] text-amber-400 hover:underline cursor-pointer flex items-center gap-1"
-                    >
-                      <Key className="w-3 h-3" />
-                      <span>Set API Key (Step 2)</span>
-                    </button>
-                  )}
-                </div>
+            <div className="rounded-xl bg-zinc-900/50 border border-zinc-800/80 p-5 space-y-4">
+              <div className="flex items-center justify-between text-xs text-zinc-400">
+                <span className="font-medium text-zinc-200">Audio Track</span>
+                <span className="font-mono text-[11px] text-zinc-500">
+                  {userApiKey ? `Key Active: ${userApiKey.slice(0, 4)}••` : 'No Key Set'}
+                </span>
               </div>
 
               {/* Drag & Drop Area */}
               <div
                 onClick={() => fileInputRef.current?.click()}
-                className={`border-2 border-dashed rounded-xl p-6 sm:p-8 text-center cursor-pointer transition ${
+                className={`border border-dashed rounded-lg p-6 sm:p-8 text-center cursor-pointer transition ${
                   selectedFile
-                    ? 'border-amber-500/80 bg-amber-500/10'
-                    : 'border-slate-700 hover:border-amber-500/50 hover:bg-slate-800/40'
+                    ? 'border-zinc-600 bg-zinc-900/60'
+                    : 'border-zinc-800 hover:border-zinc-700 bg-zinc-950/40 hover:bg-zinc-900/30'
                 }`}
               >
                 <input
@@ -1225,33 +1159,33 @@ export default function App() {
                       const file = e.target.files[0];
                       setSelectedFile(file);
                       setErrorMessage(null);
-                      addLog(`Selected audio file: "${file.name}" (${(file.size / (1024 * 1024)).toFixed(2)} MB)`, 'info', 'INPUT');
+                      addLog(`Selected audio track: "${file.name}" (${(file.size / (1024 * 1024)).toFixed(2)} MB)`, 'info', 'INPUT');
                     }
                   }}
                   className="hidden"
                 />
 
-                <div className="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center mx-auto mb-3 text-amber-400 shadow-md">
-                  <Upload className="w-6 h-6" />
+                <div className="w-10 h-10 rounded-lg bg-zinc-800/80 flex items-center justify-center mx-auto mb-2.5 text-zinc-300">
+                  <Upload className="w-5 h-5" />
                 </div>
 
                 {selectedFile ? (
                   <div className="space-y-1">
-                    <p className="text-sm sm:text-base font-bold text-white flex items-center justify-center gap-2">
-                      <FileAudio className="w-4 h-4 text-amber-400" />
+                    <p className="text-sm font-semibold text-zinc-100 flex items-center justify-center gap-1.5">
+                      <FileAudio className="w-4 h-4 text-zinc-400" />
                       <span>{selectedFile.name}</span>
                     </p>
-                    <p className="text-xs text-amber-300">
-                      {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB • Click to select another audio track
+                    <p className="text-xs text-zinc-400 font-mono tabular-nums">
+                      {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB · Click to choose a different track
                     </p>
                   </div>
                 ) : (
-                  <div className="space-y-1.5">
-                    <p className="text-sm sm:text-base font-bold text-slate-200">
-                      Drop your song file here, or <span className="text-amber-400 underline">click to browse</span>
+                  <div className="space-y-1">
+                    <p className="text-sm font-medium text-zinc-200">
+                      Drop audio file here, or <span className="text-zinc-100 underline underline-offset-2">browse files</span>
                     </p>
-                    <p className="text-xs text-slate-500">
-                      Supports MP3, WAV, M4A, AAC, FLAC, OGG (audio stays strictly on your device)
+                    <p className="text-xs text-zinc-500">
+                      MP3, WAV, M4A, FLAC, or AAC (audio remains strictly in device memory)
                     </p>
                   </div>
                 )}
@@ -1263,16 +1197,16 @@ export default function App() {
                   type="button"
                   onClick={handleUploadFile}
                   disabled={!selectedFile || isProcessing}
-                  className="w-full sm:w-auto flex-1 py-3 px-6 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 transition shadow-lg shadow-amber-500/20 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto flex-1 py-2.5 px-5 rounded-lg font-semibold text-xs sm:text-sm bg-zinc-100 hover:bg-white text-zinc-950 transition shadow-sm disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2"
                 >
                   {isProcessing ? (
                     <>
-                      <Loader2 className="w-4 h-4 animate-spin text-slate-950" />
-                      <span>{processingStatus || 'Analyzing audio with Gemini AI...'}</span>
+                      <Loader2 className="w-4 h-4 animate-spin text-zinc-950" />
+                      <span>{processingStatus || 'Analyzing audio pipeline...'}</span>
                     </>
                   ) : (
                     <>
-                      <Sparkles className="w-4 h-4 fill-slate-950" />
+                      <Sparkles className="w-4 h-4 fill-zinc-950 text-zinc-950" />
                       <span>Transcribe Audio & Generate Lyrics</span>
                     </>
                   )}
@@ -1281,50 +1215,33 @@ export default function App() {
                 <button
                   type="button"
                   onClick={loadDemoSong}
-                  className="w-full sm:w-auto py-3 px-4 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition cursor-pointer flex items-center justify-center gap-1.5 whitespace-nowrap"
+                  className="w-full sm:w-auto py-2.5 px-4 rounded-lg text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 transition cursor-pointer flex items-center justify-center gap-1.5 whitespace-nowrap"
                 >
-                  <Flame className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Try Demo Song (Veera Veera)</span>
+                  <span>Test with Demo Song</span>
                 </button>
               </div>
             </div>
 
-            {/* ======================================================= */}
-            {/* MEANWHILE SCROLLING CONSOLE OUTPUT                      */}
-            {/* ======================================================= */}
-            <div className="rounded-2xl bg-slate-950 border border-slate-800 shadow-2xl overflow-hidden flex flex-col">
+            {/* Vercel / GitHub Actions Style Live Console */}
+            <div className="rounded-xl bg-[#0c0c0e] border border-zinc-800/90 overflow-hidden flex flex-col">
               {/* Terminal Title Bar */}
-              <div className="px-4 py-2.5 bg-slate-900 border-b border-slate-800 flex items-center justify-between text-xs">
+              <div className="px-4 py-2.5 bg-zinc-900/70 border-b border-zinc-800/80 flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 inline-block" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block" />
-                  </div>
-                  <span className="text-slate-600 font-mono">|</span>
-                  <div className="flex items-center gap-1.5 font-mono text-slate-300 font-bold">
-                    <Terminal className="w-3.5 h-3.5 text-amber-400" />
-                    <span>gemini-transcribe-console ~ /live-output</span>
-                  </div>
+                  <Terminal className="w-3.5 h-3.5 text-zinc-400" />
+                  <span className="font-mono text-zinc-300 font-medium text-[11px]">
+                    transcription-pipeline.log
+                  </span>
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 text-[11px] font-mono">
                   {isProcessing ? (
-                    <div className="flex items-center gap-1.5 text-amber-400 font-mono text-[11px] animate-pulse">
-                      <span className="w-2 h-2 rounded-full bg-amber-400" />
-                      <span>TRANSCRIBING...</span>
-                    </div>
+                    <span className="text-amber-400">Processing audio...</span>
                   ) : (
-                    <div className="flex items-center gap-1.5 text-emerald-400 font-mono text-[11px]">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                      <span>AUTO-SCROLL: ON</span>
-                    </div>
+                    <span className="text-zinc-500">Auto-scroll: ON</span>
                   )}
-
-                  <span className="text-[10px] text-slate-500 font-mono">
-                    {progressLogs.length} events
-                  </span>
-
+                  <span className="text-zinc-600">·</span>
+                  <span className="text-zinc-400 tabular-nums">{progressLogs.length} events</span>
+                  <span className="text-zinc-600">·</span>
                   <button
                     type="button"
                     onClick={() => {
@@ -1333,12 +1250,12 @@ export default function App() {
                           id: `log_cleared_${Date.now()}`,
                           time: '00:00.0',
                           stage: 'SYSTEM',
-                          text: 'Console log buffer cleared.',
+                          text: 'Console buffer cleared.',
                           type: 'dim',
                         },
                       ]);
                     }}
-                    className="text-[10px] text-slate-400 hover:text-slate-200 underline cursor-pointer"
+                    className="text-zinc-500 hover:text-zinc-300 cursor-pointer"
                   >
                     Clear
                   </button>
@@ -1348,33 +1265,33 @@ export default function App() {
               {/* Scrolling Log Output Container */}
               <div
                 ref={logContainerRef}
-                className="h-64 sm:h-72 p-4 overflow-y-auto font-mono text-[11px] sm:text-xs leading-relaxed space-y-1.5 bg-slate-950/95 text-slate-200 select-text scroll-smooth"
+                className="h-64 sm:h-72 p-4 overflow-y-auto font-mono text-xs leading-relaxed space-y-1.5 bg-[#09090b] text-zinc-300 select-text scroll-smooth"
               >
                 {progressLogs.map((log) => {
-                  let badgeStyle = 'bg-slate-800 text-slate-300';
-                  let textColor = 'text-slate-300';
+                  let stageColor = 'text-zinc-500';
+                  let textColor = 'text-zinc-300';
 
                   if (log.type === 'gemini') {
-                    badgeStyle = 'bg-amber-500/20 text-amber-300 border border-amber-500/30';
-                    textColor = 'text-amber-200';
+                    stageColor = 'text-amber-400';
+                    textColor = 'text-zinc-200';
                   } else if (log.type === 'success') {
-                    badgeStyle = 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
-                    textColor = 'text-emerald-300 font-semibold';
+                    stageColor = 'text-emerald-400';
+                    textColor = 'text-emerald-300 font-medium';
                   } else if (log.type === 'warn') {
-                    badgeStyle = 'bg-red-500/20 text-red-300 border border-red-500/30';
+                    stageColor = 'text-red-400';
                     textColor = 'text-red-300';
                   } else if (log.type === 'dim') {
-                    badgeStyle = 'bg-slate-900 text-slate-500';
-                    textColor = 'text-slate-500';
+                    stageColor = 'text-zinc-600';
+                    textColor = 'text-zinc-500';
                   }
 
                   return (
-                    <div key={log.id} className="flex items-start gap-2.5 hover:bg-slate-900/40 px-1 py-0.5 rounded transition-colors">
-                      <span className="text-slate-600 shrink-0 text-[10px] select-none">
-                        [{log.time}]
+                    <div key={log.id} className="flex items-start gap-2.5 py-0.5 hover:bg-zinc-900/30 px-1 rounded transition-colors">
+                      <span className="text-zinc-600 shrink-0 text-[11px] select-none tabular-nums">
+                        {log.time}
                       </span>
-                      <span className={`text-[10px] px-1.5 py-0.2 rounded font-bold shrink-0 ${badgeStyle}`}>
-                        {log.stage}
+                      <span className={`text-[11px] font-semibold shrink-0 uppercase ${stageColor}`}>
+                        [{log.stage}]
                       </span>
                       <span className={`break-words ${textColor}`}>
                         {log.text}
@@ -1383,39 +1300,37 @@ export default function App() {
                   );
                 })}
 
-                {/* Blinking Live Prompt if processing */}
+                {/* Processing Indicator */}
                 {isProcessing && (
-                  <div className="flex items-center gap-2 text-amber-400 font-mono text-xs pt-1 animate-pulse">
-                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                    <span>{processingStatus || 'Streaming model response and synthesizing timestamps...'}</span>
-                    <span className="inline-block w-2 h-4 bg-amber-400 animate-bounce" />
+                  <div className="flex items-center gap-2 text-zinc-400 font-mono text-xs pt-1">
+                    <Loader2 className="w-3.5 h-3.5 animate-spin text-zinc-400" />
+                    <span>{processingStatus || 'Streaming response and synthesizing line boundaries...'}</span>
                   </div>
                 )}
               </div>
 
               {/* Console Footer */}
-              <div className="px-4 py-2.5 bg-slate-900/80 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
-                <div className="flex items-center gap-2 text-slate-400 text-[11px]">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>Log output auto-scrolls live while transcribing</span>
-                </div>
+              <div className="px-4 py-2.5 bg-zinc-900/60 border-t border-zinc-800/80 flex items-center justify-between text-xs">
+                <span className="text-zinc-500 text-[11px]">
+                  Output auto-scrolls down as Gemini parses audio stems
+                </span>
 
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => setCurrentStep('apikey')}
-                    className="text-xs text-slate-400 hover:text-white underline cursor-pointer"
+                    className="text-xs text-zinc-400 hover:text-white transition cursor-pointer"
                   >
-                    ← Back to Step 2 (API Key)
+                    ← Back to Step 2
                   </button>
 
                   {currentSong && (
                     <button
                       type="button"
                       onClick={() => setCurrentStep('studio')}
-                      className="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition cursor-pointer flex items-center gap-1.5"
+                      className="px-3 py-1 rounded-md text-xs font-semibold bg-zinc-100 hover:bg-white text-zinc-950 transition cursor-pointer flex items-center gap-1.5"
                     >
-                      <span>Open Lyrics Studio (Step 4)</span>
+                      <span>Open Studio (Step 4)</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   )}
@@ -1423,22 +1338,22 @@ export default function App() {
               </div>
             </div>
 
-            {/* Step Navigation Back/Forward Bar */}
-            <div className="flex items-center justify-between pt-2">
+            {/* Step Navigation Bar */}
+            <div className="flex items-center justify-between pt-1">
               <button
                 type="button"
                 onClick={() => setCurrentStep('apikey')}
-                className="py-2.5 px-4 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition cursor-pointer flex items-center gap-1.5"
+                className="py-2 px-3.5 rounded-lg text-xs font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition cursor-pointer flex items-center gap-1.5"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
-                <span>Step 2: API Key</span>
+                <span>Back to Step 2 (API Key)</span>
               </button>
 
               {currentSong ? (
                 <button
                   type="button"
                   onClick={() => setCurrentStep('studio')}
-                  className="py-2.5 px-5 rounded-xl text-xs font-bold bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 transition shadow cursor-pointer flex items-center gap-1.5"
+                  className="py-2 px-4 rounded-lg text-xs font-semibold bg-zinc-100 hover:bg-white text-zinc-950 transition shadow-sm cursor-pointer flex items-center gap-1.5"
                 >
                   <span>Go to Studio (Step 4)</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -1447,9 +1362,8 @@ export default function App() {
                 <button
                   type="button"
                   onClick={loadDemoSong}
-                  className="py-2.5 px-4 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 transition cursor-pointer flex items-center gap-1.5"
+                  className="py-2 px-3.5 rounded-lg text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 transition cursor-pointer flex items-center gap-1.5"
                 >
-                  <Flame className="w-3.5 h-3.5" />
                   <span>Load Demo Track →</span>
                 </button>
               )}
@@ -1459,46 +1373,45 @@ export default function App() {
 
         {/* Fallback if user navigates to Step 4 but hasn't uploaded a song yet */}
         {currentStep === 'studio' && !currentSong && (
-          <main className="flex-1 max-w-lg w-full mx-auto px-4 py-16 text-center space-y-6">
-            <div className="w-16 h-16 rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center mx-auto text-amber-400 shadow-xl">
-              <Music className="w-8 h-8" />
+          <main className="flex-1 max-w-md w-full mx-auto px-4 py-16 text-center space-y-5">
+            <div className="w-12 h-12 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center mx-auto text-zinc-400">
+              <Music className="w-6 h-6" />
             </div>
-            <div className="space-y-2">
-              <h3 className="text-xl font-bold text-white">No Song Loaded in Studio Yet</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Please upload your song track in Step 3, or test immediately with the preloaded "Veera Veera" demo song.
+            <div className="space-y-1">
+              <h3 className="text-lg font-semibold text-zinc-100">No Track Loaded</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed">
+                Upload your audio file in Step 3 or test immediately with the preloaded "Veera Veera" demo track.
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 pt-2">
               <button
                 type="button"
                 onClick={() => setCurrentStep('upload')}
-                className="w-full sm:w-auto py-3 px-6 rounded-xl font-bold text-xs bg-amber-500 hover:bg-amber-400 text-slate-950 transition shadow cursor-pointer flex items-center justify-center gap-1.5"
+                className="w-full sm:w-auto py-2.5 px-4 rounded-lg font-semibold text-xs bg-zinc-100 hover:bg-white text-zinc-950 transition shadow-sm cursor-pointer flex items-center justify-center gap-1.5"
               >
-                <Upload className="w-4 h-4" />
-                <span>Go to Step 3: Upload Audio</span>
+                <Upload className="w-3.5 h-3.5" />
+                <span>Go to Step 3 (Upload)</span>
               </button>
               <button
                 type="button"
                 onClick={loadDemoSong}
-                className="w-full sm:w-auto py-3 px-5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer flex items-center justify-center gap-1.5"
+                className="w-full sm:w-auto py-2.5 px-4 rounded-lg text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 transition cursor-pointer flex items-center justify-center gap-1.5"
               >
-                <Flame className="w-3.5 h-3.5 text-amber-400" />
                 <span>Load Demo Song</span>
               </button>
             </div>
           </main>
         )}
 
-        <footer className="border-t border-slate-800/80 bg-slate-950/80 py-6 text-center text-xs text-slate-500">
+        <footer className="border-t border-zinc-800/80 bg-[#09090b] py-5 text-center text-xs text-zinc-500">
           <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p>Universal Telugu & Multilingual Song Lyrics Transcriber • Powered by Gemini AI</p>
-            <div className="flex items-center gap-4 text-[11px]">
-              <span className="text-emerald-400">Step-by-Step Architecture</span>
-              <span className="text-slate-700">•</span>
-              <span>100% In-Browser Audio</span>
-              <span className="text-slate-700">•</span>
-              <span>Live Output Console</span>
+            <p>Telugu Audio Transcriber · Powered by Google Gemini</p>
+            <div className="flex items-center gap-3 text-[11px] text-zinc-500">
+              <span>Client-Side Execution</span>
+              <span>·</span>
+              <span>Decimal Millisecond Timestamps</span>
+              <span>·</span>
+              <span>Zero Server Audio Storage</span>
             </div>
           </div>
         </footer>
@@ -1510,7 +1423,7 @@ export default function App() {
   // VIEW 2: FULL SYNCHRONIZED PLAYER & TRANSCRIPTION STUDIO
   // -------------------------------------------------------------
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-['Plus_Jakarta_Sans',sans-serif] selection:bg-amber-500/30 selection:text-amber-200">
+    <div className="min-h-screen bg-[#09090b] text-zinc-100 flex flex-col font-['Plus_Jakarta_Sans',sans-serif] selection:bg-zinc-800 selection:text-zinc-100">
       {/* Hidden audio element */}
       <audio
         ref={audioRef}
@@ -1519,33 +1432,31 @@ export default function App() {
       />
 
       {/* Top Navigation Header */}
-      <header className="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-30">
+      <header className="border-b border-zinc-800/80 bg-[#09090b]/90 backdrop-blur sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setCurrentStep('upload')}
-              className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition cursor-pointer"
+              className="p-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-100 border border-zinc-800 transition cursor-pointer"
               title="Back to Step 3: Upload"
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-600 via-red-600 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-600/20 text-white font-bold shrink-0">
-              <Flame className="w-5 h-5 animate-pulse" />
+            <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-100 font-bold shrink-0">
+              <Headphones className="w-4 h-4 text-zinc-300" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] uppercase tracking-widest font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
-                  Step 4 • Lyrics Studio
-                </span>
-                <span className="text-xs text-slate-500 hidden sm:inline">•</span>
-                <span className="text-xs text-slate-400 hidden sm:inline">
-                  {currentSong.language} Track Sync
-                </span>
+              <div className="flex items-center gap-2 text-xs text-zinc-500">
+                <span className="font-mono text-[11px] text-zinc-400">Step 4</span>
+                <span>·</span>
+                <span>Lyrics Studio</span>
+                <span className="hidden sm:inline">·</span>
+                <span className="hidden sm:inline">{currentSong.language}</span>
               </div>
-              <h1 className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
+              <h1 className="text-sm sm:text-base font-semibold text-zinc-100 tracking-tight flex items-center gap-2">
                 <span>{currentSong.title}</span>
                 {currentSong.movieOrAlbum && (
-                  <span className="text-xs font-normal text-slate-400">
+                  <span className="text-xs font-normal text-zinc-400">
                     ({currentSong.movieOrAlbum})
                   </span>
                 )}
@@ -1553,48 +1464,48 @@ export default function App() {
             </div>
           </div>
 
-          {/* Stepper Navigation Pills inside Studio */}
-          <nav className="flex items-center gap-1 sm:gap-2 bg-slate-950/80 p-1 rounded-xl border border-slate-800 order-last lg:order-none w-full lg:w-auto justify-center">
+          {/* Stepper Navigation inside Studio */}
+          <nav className="flex items-center gap-1 bg-zinc-900/80 p-1 rounded-lg border border-zinc-800 order-last lg:order-none w-full lg:w-auto justify-center">
             <button
               type="button"
               onClick={() => setCurrentStep('welcome')}
-              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded text-xs text-zinc-400 hover:text-zinc-200 transition cursor-pointer"
             >
-              <span className="w-4 h-4 rounded-full bg-slate-800 text-slate-300 text-[10px] flex items-center justify-center font-bold">1</span>
+              <span className="font-mono text-[10px] text-zinc-500">01</span>
               <span>Welcome</span>
             </button>
 
-            <ChevronRight className="w-3.5 h-3.5 text-slate-600 hidden sm:inline" />
+            <span className="text-zinc-700 text-xs px-1">/</span>
 
             <button
               type="button"
               onClick={() => setCurrentStep('apikey')}
-              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded text-xs text-zinc-400 hover:text-zinc-200 transition cursor-pointer"
             >
-              <span className="w-4 h-4 rounded-full bg-slate-800 text-slate-300 text-[10px] flex items-center justify-center font-bold">2</span>
+              <span className="font-mono text-[10px] text-zinc-500">02</span>
               <span>API Key</span>
-              {userApiKey && <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />}
+              {userApiKey && <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />}
             </button>
 
-            <ChevronRight className="w-3.5 h-3.5 text-slate-600 hidden sm:inline" />
+            <span className="text-zinc-700 text-xs px-1">/</span>
 
             <button
               type="button"
               onClick={() => setCurrentStep('upload')}
-              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded text-xs text-zinc-400 hover:text-zinc-200 transition cursor-pointer"
             >
-              <span className="w-4 h-4 rounded-full bg-slate-800 text-slate-300 text-[10px] flex items-center justify-center font-bold">3</span>
+              <span className="font-mono text-[10px] text-zinc-500">03</span>
               <span>Upload & Log</span>
             </button>
 
-            <ChevronRight className="w-3.5 h-3.5 text-slate-600 hidden sm:inline" />
+            <span className="text-zinc-700 text-xs px-1">/</span>
 
             <button
               type="button"
               onClick={() => setCurrentStep('studio')}
-              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 text-slate-950 shadow-md transition cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium bg-zinc-800 text-zinc-100 shadow-sm cursor-pointer"
             >
-              <span className="w-4 h-4 rounded-full bg-slate-950 text-amber-400 text-[10px] flex items-center justify-center font-bold">4</span>
+              <span className="font-mono text-[10px] text-zinc-300">04</span>
               <span>Studio</span>
             </button>
           </nav>
@@ -1607,10 +1518,10 @@ export default function App() {
                 setApiKeyInput(userApiKey);
                 setCurrentStep('apikey');
               }}
-              className="flex items-center gap-1.5 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 px-3 py-2 rounded-xl transition cursor-pointer"
-              title="Manage Gemini API Key (Step 2)"
+              className="flex items-center gap-1.5 text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 px-2.5 py-1.5 rounded-lg transition cursor-pointer"
+              title="Manage Gemini API Key"
             >
-              <Key className="w-3.5 h-3.5 text-amber-400" />
+              <Key className="w-3.5 h-3.5 text-zinc-400" />
               <span className="hidden sm:inline">API Key</span>
             </button>
 
@@ -1620,25 +1531,25 @@ export default function App() {
                 setCurrentStep('upload');
                 setErrorMessage(null);
               }}
-              className="flex items-center gap-2 text-xs font-bold bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 px-3.5 py-2 rounded-xl shadow-md shadow-amber-500/20 transition-all cursor-pointer active:scale-95"
+              className="flex items-center gap-1.5 text-xs font-medium bg-zinc-100 hover:bg-white text-zinc-950 px-3 py-1.5 rounded-lg transition shadow-sm cursor-pointer"
             >
-              <Upload className="w-4 h-4 text-slate-950" />
-              <span>Upload Track (Step 3)</span>
+              <Upload className="w-3.5 h-3.5 text-zinc-950" />
+              <span>Upload Track</span>
             </button>
 
             {/* Copy Markdown Table */}
             <button
               onClick={() => copyToClipboard(generateMarkdownTable(currentSong), 'markdown')}
-              className="flex items-center gap-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-amber-400 border border-slate-700 px-3 py-2 rounded-xl transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 px-2.5 py-1.5 rounded-lg transition cursor-pointer"
               title="Copy the Markdown transcription table"
             >
               {copiedType === 'markdown' ? (
                 <Check className="w-3.5 h-3.5 text-emerald-400" />
               ) : (
-                <Copy className="w-3.5 h-3.5" />
+                <Copy className="w-3.5 h-3.5 text-zinc-400" />
               )}
               <span className="hidden sm:inline">
-                {copiedType === 'markdown' ? 'Copied Table!' : 'Copy Table'}
+                {copiedType === 'markdown' ? 'Copied' : 'Copy Table'}
               </span>
             </button>
 
@@ -1651,10 +1562,10 @@ export default function App() {
                   'text/plain'
                 )
               }
-              className="hidden md:flex items-center gap-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-2 rounded-xl transition-colors cursor-pointer"
-              title="Download Plain Text lyrics with timestamps and meaning"
+              className="hidden md:flex items-center gap-1 text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 px-2.5 py-1.5 rounded-lg transition cursor-pointer font-mono"
+              title="Download Plain Text lyrics"
             >
-              <Download className="w-3.5 h-3.5" />
+              <Download className="w-3 h-3 text-zinc-400" />
               <span>.TXT</span>
             </button>
 
@@ -1667,10 +1578,10 @@ export default function App() {
                   'text/plain'
                 )
               }
-              className="hidden lg:flex items-center gap-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-2 rounded-xl transition-colors cursor-pointer"
+              className="hidden lg:flex items-center gap-1 text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 px-2.5 py-1.5 rounded-lg transition cursor-pointer font-mono"
               title="Download Subtitles (.SRT)"
             >
-              <Download className="w-3.5 h-3.5" />
+              <Download className="w-3 h-3 text-zinc-400" />
               <span>.SRT</span>
             </button>
 
@@ -1683,10 +1594,10 @@ export default function App() {
                   'text/plain'
                 )
               }
-              className="hidden lg:flex items-center gap-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-2 rounded-xl transition-colors cursor-pointer"
-              title="Download Synced Karaoke Lyrics (.LRC)"
+              className="hidden lg:flex items-center gap-1 text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 px-2.5 py-1.5 rounded-lg transition cursor-pointer font-mono"
+              title="Download Synced Lyrics (.LRC)"
             >
-              <Download className="w-3.5 h-3.5" />
+              <Download className="w-3 h-3 text-zinc-400" />
               <span>.LRC</span>
             </button>
           </div>
@@ -1694,29 +1605,29 @@ export default function App() {
       </header>
 
       {/* Main Studio Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 space-y-5">
         
-        {/* Songs Switcher Ribbon (If user has multiple songs) */}
+        {/* Songs Switcher Ribbon */}
         {songs.length > 1 && (
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin">
-            <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold whitespace-nowrap flex items-center gap-1.5">
-              <FolderOpen className="w-3.5 h-3.5" /> Uploaded Tracks ({songs.length}):
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
+            <span className="text-zinc-500 uppercase tracking-wider text-[11px] font-medium whitespace-nowrap flex items-center gap-1">
+              <FolderOpen className="w-3.5 h-3.5 text-zinc-400" /> Tracks ({songs.length}):
             </span>
             {songs.map((song) => (
               <div
                 key={song.id}
                 onClick={() => setActiveSongId(song.id)}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer border whitespace-nowrap ${
+                className={`flex items-center gap-2 px-2.5 py-1 rounded-md text-xs transition cursor-pointer border whitespace-nowrap ${
                   song.id === activeSongId
-                    ? 'bg-amber-500/20 border-amber-500/50 text-amber-300 font-bold'
-                    : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800'
+                    ? 'bg-zinc-800 border-zinc-700 text-zinc-100 font-medium'
+                    : 'bg-zinc-900/80 border-zinc-800/80 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60'
                 }`}
               >
-                <FileAudio className="w-3.5 h-3.5 text-amber-400" />
+                <FileAudio className="w-3.5 h-3.5 text-zinc-400" />
                 <span>{song.title}</span>
                 <button
                   onClick={(e) => deleteSong(song.id, e)}
-                  className="text-slate-500 hover:text-red-400 ml-1"
+                  className="text-zinc-500 hover:text-red-400 ml-0.5"
                   title="Delete track"
                 >
                   ✕
@@ -1726,57 +1637,52 @@ export default function App() {
           </div>
         )}
 
-        {/* Audio Player Card */}
-        <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900/90 to-red-950/40 border border-slate-800 shadow-2xl p-5 sm:p-6">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-red-600/5 rounded-full blur-3xl pointer-events-none" />
-
-          <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        {/* Audio Player Card (Linear DAW Controller) */}
+        <section className="rounded-xl bg-zinc-900/50 border border-zinc-800/80 p-5 sm:p-6 space-y-5">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
             {/* Song Meta info */}
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold">
-                <Music className="w-3.5 h-3.5 text-amber-400" />
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2 text-xs text-zinc-400">
+                <Music className="w-3.5 h-3.5 text-zinc-400" />
                 <span>
                   {currentSong.sourceType === 'upload' || currentSong.sourceName
                     ? `Uploaded: ${currentSong.sourceName || currentSong.title}`
                     : 'Transcribed Audio Track'}
                 </span>
-                <span className="text-slate-600">•</span>
-                <span className="text-slate-300">{currentSong.language}</span>
+                <span>·</span>
+                <span className="text-zinc-300 font-medium">{currentSong.language}</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              <h2 className="text-xl sm:text-2xl font-bold text-zinc-100 tracking-tight">
                 {currentSong.title}
               </h2>
-              <p className="text-sm text-slate-300">
+              <p className="text-xs text-zinc-400">
                 {currentSong.composer && (
                   <>
-                    <strong className="text-amber-400">Music:</strong> {currentSong.composer}{' '}
-                    &nbsp;|&nbsp;{' '}
+                    <span className="text-zinc-500">Music:</span> {currentSong.composer}{' '}
+                    &nbsp;·&nbsp;{' '}
                   </>
                 )}
                 {currentSong.lyrics && (
                   <>
-                    <strong className="text-amber-400">Lyrics:</strong> {currentSong.lyrics}{' '}
-                    &nbsp;|&nbsp;{' '}
+                    <span className="text-zinc-500">Lyrics:</span> {currentSong.lyrics}{' '}
+                    &nbsp;·&nbsp;{' '}
                   </>
                 )}
                 {currentSong.singers && (
                   <>
-                    <strong className="text-amber-400">Vocals:</strong> {currentSong.singers}
+                    <span className="text-zinc-500">Vocals:</span> {currentSong.singers}
                   </>
                 )}
               </p>
             </div>
 
             {/* Visualizer Simulation */}
-            <div className="flex items-center gap-1.5 h-10 px-4 py-2 bg-slate-950/60 rounded-xl border border-slate-800/80">
+            <div className="flex items-center gap-1.5 h-9 px-3.5 bg-zinc-950/80 rounded-lg border border-zinc-800">
               {[40, 75, 90, 60, 30, 85, 100, 65, 45, 80, 95, 50, 70, 85, 40].map((h, i) => (
                 <div
                   key={i}
                   className={`w-1 rounded-full transition-all duration-150 ${
-                    isPlaying
-                      ? 'bg-gradient-to-t from-amber-500 to-red-500'
-                      : 'bg-slate-700'
+                    isPlaying ? 'bg-zinc-200' : 'bg-zinc-700'
                   }`}
                   style={{
                     height: isPlaying
@@ -1785,14 +1691,14 @@ export default function App() {
                   }}
                 />
               ))}
-              <span className="text-xs font-mono text-amber-400 ml-2 font-semibold">
+              <span className="text-xs font-mono text-zinc-300 ml-2 font-medium tabular-nums">
                 {formatTime(currentTime)} / {formatTime(duration || currentSong.durationSeconds)}
               </span>
             </div>
           </div>
 
           {/* Scrubber & Player Controls Bar */}
-          <div className="mt-6 pt-5 border-t border-slate-800/80 space-y-4">
+          <div className="pt-4 border-t border-zinc-800/80 space-y-3.5">
             {/* Timeline slider */}
             <div className="space-y-1">
               <div className="relative flex items-center">
@@ -1803,12 +1709,12 @@ export default function App() {
                   step="0.05"
                   value={currentTime}
                   onChange={handleSeek}
-                  className="w-full h-2.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500 focus:outline-none"
+                  className="w-full h-1.5 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-zinc-100 focus:outline-none"
                 />
               </div>
 
               {/* Timestamp markers on slider */}
-              <div className="flex justify-between text-[11px] text-slate-500 font-mono px-1">
+              <div className="flex justify-between text-[11px] text-zinc-500 font-mono tabular-nums px-0.5">
                 <span>00:00.0</span>
                 <span>{formatTime((duration || currentSong.durationSeconds) * 0.25)}</span>
                 <span>{formatTime((duration || currentSong.durationSeconds) * 0.5)}</span>
@@ -1818,8 +1724,8 @@ export default function App() {
             </div>
 
             {/* Playback Buttons & Speed */}
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5">
                 {/* Restart */}
                 <button
                   onClick={() => {
@@ -1828,26 +1734,26 @@ export default function App() {
                       setCurrentTime(0);
                     }
                   }}
-                  className="p-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition cursor-pointer"
+                  className="p-2 rounded-lg bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 hover:text-white border border-zinc-700/60 transition cursor-pointer"
                   title="Rewind to start"
                 >
-                  <RotateCcw className="w-4 h-4" />
+                  <RotateCcw className="w-3.5 h-3.5" />
                 </button>
 
                 {/* Primary Play / Pause */}
                 <button
                   onClick={togglePlay}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-red-600 hover:from-amber-400 hover:to-red-500 text-slate-950 font-bold shadow-lg shadow-amber-500/20 active:scale-95 transition-all cursor-pointer"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-zinc-100 hover:bg-white text-zinc-950 font-semibold text-xs shadow-sm active:scale-98 transition cursor-pointer"
                 >
                   {isPlaying ? (
                     <>
-                      <Pause className="w-5 h-5 fill-slate-950" />
+                      <Pause className="w-3.5 h-3.5 fill-zinc-950" />
                       <span>Pause</span>
                     </>
                   ) : (
                     <>
-                      <Play className="w-5 h-5 fill-slate-950" />
-                      <span>Play Song</span>
+                      <Play className="w-3.5 h-3.5 fill-zinc-950" />
+                      <span>Play Track</span>
                     </>
                   )}
                 </button>
@@ -1855,10 +1761,10 @@ export default function App() {
                 {/* Loop line toggle */}
                 <button
                   onClick={() => setLoopActiveLine(!loopActiveLine)}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold border transition cursor-pointer ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition cursor-pointer ${
                     loopActiveLine
-                      ? 'bg-amber-500/20 border-amber-500 text-amber-300'
-                      : 'bg-slate-800/80 border-slate-700 text-slate-400 hover:text-slate-200'
+                      ? 'bg-zinc-800 text-zinc-100 border-zinc-600'
+                      : 'bg-zinc-900/80 border-zinc-800 text-zinc-400 hover:text-zinc-200'
                   }`}
                   title="Loop current line for practicing pronunciation"
                 >
@@ -1868,18 +1774,18 @@ export default function App() {
               </div>
 
               {/* Speed & Volume */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3.5">
                 {/* Speed selector */}
-                <div className="flex items-center gap-1 bg-slate-950/70 p-1 rounded-lg border border-slate-800 text-xs">
-                  <span className="text-slate-500 px-2 font-mono">Speed:</span>
+                <div className="flex items-center gap-1 bg-zinc-950 p-1 rounded-lg border border-zinc-800 text-xs">
+                  <span className="text-zinc-500 px-1.5 font-mono text-[11px]">Speed:</span>
                   {[0.75, 1, 1.25].map((rate) => (
                     <button
                       key={rate}
                       onClick={() => handleRateChange(rate)}
-                      className={`px-2 py-1 rounded font-mono text-xs cursor-pointer transition ${
+                      className={`px-2 py-0.5 rounded font-mono text-xs cursor-pointer transition ${
                         playbackRate === rate
-                          ? 'bg-amber-500 text-slate-950 font-bold'
-                          : 'text-slate-400 hover:text-white'
+                          ? 'bg-zinc-800 text-zinc-100 font-medium'
+                          : 'text-zinc-400 hover:text-zinc-200'
                       }`}
                     >
                       {rate}x
@@ -1891,13 +1797,13 @@ export default function App() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={toggleMute}
-                    className="text-slate-400 hover:text-white cursor-pointer"
+                    className="text-zinc-400 hover:text-zinc-200 cursor-pointer"
                     title={isMuted ? 'Unmute' : 'Mute'}
                   >
                     {isMuted || volume === 0 ? (
-                      <VolumeX className="w-4 h-4 text-red-400" />
+                      <VolumeX className="w-3.5 h-3.5 text-red-400" />
                     ) : (
-                      <Volume2 className="w-4 h-4" />
+                      <Volume2 className="w-3.5 h-3.5" />
                     )}
                   </button>
                   <input
@@ -1907,7 +1813,7 @@ export default function App() {
                     step="0.05"
                     value={isMuted ? 0 : volume}
                     onChange={handleVolumeChange}
-                    className="w-16 h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500"
+                    className="w-16 h-1 bg-zinc-800 rounded appearance-none cursor-pointer accent-zinc-200"
                   />
                 </div>
               </div>
@@ -1916,14 +1822,14 @@ export default function App() {
         </section>
 
         {/* View Mode Switcher & Search Bar */}
-        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
-          <div className="flex items-center gap-1.5 bg-slate-950/60 p-1 rounded-lg border border-slate-800 overflow-x-auto">
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 bg-zinc-900/40 p-2 rounded-xl border border-zinc-800/80">
+          <div className="flex items-center gap-1 bg-zinc-950 p-1 rounded-lg border border-zinc-800/80 overflow-x-auto">
             <button
               onClick={() => setActiveTab('table')}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-semibold cursor-pointer transition whitespace-nowrap ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium cursor-pointer transition whitespace-nowrap ${
                 activeTab === 'table'
-                  ? 'bg-amber-500 text-slate-950 shadow'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-zinc-800 text-zinc-100 shadow-sm'
+                  : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
               <FileText className="w-3.5 h-3.5" />
@@ -1931,10 +1837,10 @@ export default function App() {
             </button>
             <button
               onClick={() => setActiveTab('karaoke')}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-semibold cursor-pointer transition whitespace-nowrap ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium cursor-pointer transition whitespace-nowrap ${
                 activeTab === 'karaoke'
-                  ? 'bg-amber-500 text-slate-950 shadow'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-zinc-800 text-zinc-100 shadow-sm'
+                  : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
               <Sparkles className="w-3.5 h-3.5" />
@@ -1942,10 +1848,10 @@ export default function App() {
             </button>
             <button
               onClick={() => setActiveTab('pitch')}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-semibold cursor-pointer transition whitespace-nowrap ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium cursor-pointer transition whitespace-nowrap ${
                 activeTab === 'pitch'
-                  ? 'bg-amber-500 text-slate-950 shadow'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-zinc-800 text-zinc-100 shadow-sm'
+                  : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
               <Activity className="w-3.5 h-3.5" />
@@ -1953,10 +1859,10 @@ export default function App() {
             </button>
             <button
               onClick={() => setActiveTab('editor')}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-semibold cursor-pointer transition whitespace-nowrap ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium cursor-pointer transition whitespace-nowrap ${
                 activeTab === 'editor'
-                  ? 'bg-amber-500 text-slate-950 shadow'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-zinc-800 text-zinc-100 shadow-sm'
+                  : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
               <Clock className="w-3.5 h-3.5" />
@@ -1964,10 +1870,10 @@ export default function App() {
             </button>
             <button
               onClick={() => setActiveTab('converter')}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-semibold cursor-pointer transition whitespace-nowrap ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium cursor-pointer transition whitespace-nowrap ${
                 activeTab === 'converter'
-                  ? 'bg-amber-500 text-slate-950 shadow'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-zinc-800 text-zinc-100 shadow-sm'
+                  : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
               <ArrowRightLeft className="w-3.5 h-3.5" />
@@ -1975,10 +1881,10 @@ export default function App() {
             </button>
             <button
               onClick={() => setActiveTab('glossary')}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-semibold cursor-pointer transition whitespace-nowrap ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium cursor-pointer transition whitespace-nowrap ${
                 activeTab === 'glossary'
-                  ? 'bg-amber-500 text-slate-950 shadow'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-zinc-800 text-zinc-100 shadow-sm'
+                  : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
               <BookOpen className="w-3.5 h-3.5" />
@@ -1986,11 +1892,11 @@ export default function App() {
             </button>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2">
             {/* Fullscreen Stage Mode Action */}
             <button
               onClick={() => setIsKaraokeStageOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-gradient-to-r from-red-600 via-orange-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white shadow-md shadow-red-600/20 transition cursor-pointer whitespace-nowrap active:scale-95"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-100 border border-zinc-700/80 transition cursor-pointer whitespace-nowrap"
               title="Open Fullscreen Singing Teleprompter"
             >
               <Maximize2 className="w-3.5 h-3.5" />
@@ -1998,19 +1904,19 @@ export default function App() {
             </button>
 
             {/* Search Box */}
-            <div className="relative flex-1 sm:w-56">
-              <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+            <div className="relative flex-1 sm:w-52">
+              <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Search lyrics..."
+                placeholder="Filter lines..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-slate-950/80 border border-slate-800 rounded-lg pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500/60"
+                className="w-full bg-zinc-950 border border-zinc-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-600"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-slate-500 hover:text-white"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-zinc-500 hover:text-zinc-300"
                 >
                   ✕
                 </button>
@@ -2021,55 +1927,53 @@ export default function App() {
 
         {/* TAB 1: FULL TRANSCRIPTION TABLE */}
         {activeTab === 'table' && (
-          <div className="space-y-4">
+          <div className="space-y-3.5">
             {/* Table Controls Bar */}
-            <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400 px-1">
+            <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-zinc-400 px-0.5">
               <div className="flex items-center gap-3">
-                <span className="font-semibold text-slate-300">
-                  Total Lines: {currentSong.lines?.length || 0}
+                <span className="font-mono text-zinc-300">
+                  {currentSong.lines?.length || 0} lines
                 </span>
-                <span className="text-slate-600">•</span>
-                <label className="flex items-center gap-1.5 cursor-pointer hover:text-slate-200">
+                <span className="text-zinc-700">·</span>
+                <label className="flex items-center gap-1.5 cursor-pointer hover:text-zinc-200">
                   <input
                     type="checkbox"
                     checked={showMeaningInTable}
                     onChange={(e) => setShowMeaningInTable(e.target.checked)}
-                    className="rounded accent-amber-500 bg-slate-900 border-slate-700"
+                    className="rounded accent-zinc-200 bg-zinc-900 border-zinc-700"
                   />
                   <span>Show English Context</span>
                 </label>
-                <label className="flex items-center gap-1.5 cursor-pointer hover:text-slate-200">
+                <label className="flex items-center gap-1.5 cursor-pointer hover:text-zinc-200">
                   <input
                     type="checkbox"
                     checked={showWordsInTable}
                     onChange={(e) => setShowWordsInTable(e.target.checked)}
-                    className="rounded accent-amber-500 bg-slate-900 border-slate-700"
+                    className="rounded accent-zinc-200 bg-zinc-900 border-zinc-700"
                   />
                   <span>Show Word Breakdown</span>
                 </label>
               </div>
 
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] text-amber-400/90 bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 rounded">
-                  Click any row to jump audio directly to that line
-                </span>
-              </div>
+              <span className="text-[11px] text-zinc-500 font-mono">
+                Click any line to seek audio
+              </span>
             </div>
 
             {/* The Main Transcription Table */}
-            <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-900/40 shadow-xl">
+            <div className="overflow-x-auto rounded-xl border border-zinc-800/80 bg-zinc-900/20">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-900/90 text-slate-300 text-xs font-semibold uppercase tracking-wider border-b border-slate-800">
-                    <th className="py-3 px-3 text-center w-14">#</th>
-                    <th className="py-3 px-4 w-32 font-mono">Time (mm:ss.s)</th>
-                    <th className="py-3 px-4">Telugu / Native Script</th>
-                    <th className="py-3 px-4">Romanized Telugu</th>
-                    <th className="py-3 px-4 w-32 text-center">Status</th>
-                    <th className="py-3 px-3 text-center w-16">Play</th>
+                  <tr className="bg-zinc-900/90 text-zinc-400 text-xs font-medium uppercase tracking-wider border-b border-zinc-800/80">
+                    <th className="py-2.5 px-3 text-center w-12 font-mono">#</th>
+                    <th className="py-2.5 px-4 w-32 font-mono text-left">Timestamp</th>
+                    <th className="py-2.5 px-4">Telugu / Native Script</th>
+                    <th className="py-2.5 px-4">Romanized Telugu</th>
+                    <th className="py-2.5 px-4 w-28 text-center">Status</th>
+                    <th className="py-2.5 px-3 text-center w-14">Play</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/60 text-sm">
+                <tbody className="divide-y divide-zinc-800/40 text-sm">
                   {filteredLyrics.map((line) => {
                     const isActive = line.id === activeLineId;
                     return (
@@ -2078,24 +1982,18 @@ export default function App() {
                           onClick={() => jumpToLine(line)}
                           className={`cursor-pointer transition-colors ${
                             isActive
-                              ? 'bg-amber-500/15 border-l-4 border-l-amber-500 font-medium'
-                              : 'hover:bg-slate-800/50'
-                          } ${line.isInstrumental ? 'bg-slate-900/30 text-slate-400' : ''}`}
+                              ? 'bg-zinc-800/60 font-medium'
+                              : 'hover:bg-zinc-800/30'
+                          } ${line.isInstrumental ? 'text-zinc-500 bg-zinc-950/20' : ''}`}
                         >
                           {/* Line Number */}
-                          <td className="py-3 px-3 text-center text-xs font-mono text-slate-500">
-                            {isActive ? (
-                              <span className="inline-block w-5 h-5 rounded-full bg-amber-500 text-slate-950 font-bold text-center leading-5">
-                                {line.id}
-                              </span>
-                            ) : (
-                              line.id
-                            )}
+                          <td className="py-3 px-3 text-center text-xs font-mono text-zinc-500 tabular-nums">
+                            {line.id}
                           </td>
 
                           {/* Time range */}
-                          <td className="py-3 px-4 font-mono text-xs text-amber-400/90 whitespace-nowrap">
-                            <span className="bg-slate-950/80 px-2 py-1 rounded border border-slate-800">
+                          <td className="py-3 px-4 font-mono text-xs text-zinc-400 whitespace-nowrap tabular-nums">
+                            <span className="bg-zinc-950/80 px-2 py-0.5 rounded border border-zinc-800/80">
                               {line.startTime} - {line.endTime}
                             </span>
                           </td>
@@ -2106,10 +2004,10 @@ export default function App() {
                               <span
                                 className={`text-base sm:text-lg leading-relaxed ${
                                   line.isInstrumental
-                                    ? 'font-mono text-slate-400 font-bold'
+                                    ? 'font-mono text-zinc-500 text-sm'
                                     : isActive
-                                    ? 'text-amber-200 font-bold'
-                                    : 'text-slate-100 font-semibold'
+                                    ? 'text-zinc-100 font-semibold'
+                                    : 'text-zinc-200'
                                 }`}
                               >
                                 {line.telugu}
@@ -2120,7 +2018,7 @@ export default function App() {
                                     e.stopPropagation();
                                     copyToClipboard(line.telugu, `line-${line.id}`);
                                   }}
-                                  className="text-slate-500 hover:text-amber-400 p-1 rounded transition opacity-60 hover:opacity-100"
+                                  className="text-zinc-600 hover:text-zinc-300 p-1 rounded transition opacity-50 hover:opacity-100"
                                   title="Copy text"
                                 >
                                   {copiedType === `line-${line.id}` ? (
@@ -2132,8 +2030,8 @@ export default function App() {
                               )}
                             </div>
                             {showMeaningInTable && !line.isInstrumental && line.englishMeaning && (
-                              <p className="text-xs text-slate-400 mt-1 font-sans">
-                                💡 {line.englishMeaning}
+                              <p className="text-xs text-zinc-400 mt-1 font-sans">
+                                {line.englishMeaning}
                               </p>
                             )}
                           </td>
@@ -2143,16 +2041,16 @@ export default function App() {
                             <span
                               className={`text-sm ${
                                 line.isInstrumental
-                                  ? 'font-mono text-slate-400 font-semibold'
+                                  ? 'font-mono text-zinc-500 text-xs'
                                   : isActive
-                                  ? 'text-amber-300 font-medium'
-                                  : 'text-slate-300'
+                                  ? 'text-zinc-200 font-medium'
+                                  : 'text-zinc-400'
                               }`}
                             >
                               {line.romanized}
                             </span>
                             {line.notes && (
-                              <p className="text-[11px] text-slate-500 mt-1 italic">
+                              <p className="text-[11px] text-zinc-500 mt-1 italic">
                                 {line.notes}
                               </p>
                             )}
@@ -2161,15 +2059,15 @@ export default function App() {
                           {/* Status */}
                           <td className="py-3 px-4 text-center">
                             {line.isInstrumental ? (
-                              <span className="inline-flex items-center gap-1 text-[11px] font-mono uppercase px-2.5 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700">
-                                [INSTRUMENTAL]
+                              <span className="inline-block text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-800 text-zinc-400 border border-zinc-700">
+                                INSTRUMENTAL
                               </span>
                             ) : line.isUnclear ? (
-                              <span className="inline-flex items-center gap-1 text-[11px] font-mono uppercase px-2.5 py-1 rounded bg-yellow-500/20 text-yellow-300 border border-yellow-500/30">
-                                [UNCLEAR]
+                              <span className="inline-block text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-amber-950/40 text-amber-300 border border-amber-800/40">
+                                UNCLEAR
                               </span>
                             ) : (
-                              <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                              <span className="inline-block text-[10px] font-medium px-2 py-0.5 rounded bg-zinc-800/60 text-zinc-300 border border-zinc-800">
                                 Sung
                               </span>
                             )}
@@ -2182,10 +2080,10 @@ export default function App() {
                                 e.stopPropagation();
                                 jumpToLine(line);
                               }}
-                              className={`p-1.5 rounded-full transition cursor-pointer ${
+                              className={`p-1.5 rounded-lg transition cursor-pointer ${
                                 isActive && isPlaying
-                                  ? 'bg-amber-500 text-slate-950 ring-2 ring-amber-400'
-                                  : 'bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-slate-400'
+                                  ? 'bg-zinc-100 text-zinc-950'
+                                  : 'text-zinc-400 hover:text-white hover:bg-zinc-800'
                               }`}
                               title={`Play from ${line.startTime}`}
                             >
@@ -2198,26 +2096,26 @@ export default function App() {
                           </td>
                         </tr>
 
-                        {/* Optional Word-by-word expanded sub-row */}
+                        {/* Word-by-word expanded sub-row */}
                         {showWordsInTable && line.words && line.words.length > 0 && (
-                          <tr className="bg-slate-950/40 text-xs text-slate-300 border-b border-slate-800/40">
+                          <tr className="bg-zinc-950/60 text-xs text-zinc-400 border-b border-zinc-800/40">
                             <td></td>
                             <td></td>
                             <td colSpan={4} className="py-2.5 px-4">
                               <div className="flex flex-wrap gap-2 items-center">
-                                <span className="text-[11px] uppercase font-bold tracking-wider text-amber-500/90 mr-1">
-                                  Word Meanings:
+                                <span className="text-[10px] uppercase font-mono text-zinc-500 mr-1">
+                                  Breakdown:
                                 </span>
                                 {line.words.map((w, wIdx) => (
                                   <span
                                     key={wIdx}
-                                    className="bg-slate-900 border border-slate-800 rounded px-2 py-1 text-xs"
+                                    className="bg-zinc-900 border border-zinc-800 rounded px-2 py-0.5 text-xs text-zinc-300"
                                   >
-                                    <strong className="text-amber-300 font-['Noto_Sans_Telugu']">
+                                    <strong className="text-zinc-100 font-['Noto_Sans_Telugu']">
                                       {w.telugu}
                                     </strong>{' '}
-                                    <span className="text-slate-400">({w.romanized})</span>:{' '}
-                                    <span className="text-slate-200">{w.meaning}</span>
+                                    <span className="text-zinc-500">({w.romanized})</span>:{' '}
+                                    <span className="text-zinc-300">{w.meaning}</span>
                                   </span>
                                 ))}
                               </div>
@@ -2235,44 +2133,41 @@ export default function App() {
 
         {/* TAB 2: LIVE KARAOKE / SYNC VIEW */}
         {activeTab === 'karaoke' && (
-          <div className="space-y-6">
-            <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 sm:p-10 text-center relative overflow-hidden shadow-2xl">
-              <div className="absolute top-4 left-4 flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping" />
-                <span className="text-xs font-mono uppercase tracking-wider text-slate-400">
-                  Line {currentActiveLine.id} of {currentSong.lines?.length || 0} •{' '}
-                  {currentActiveLine.startTime} - {currentActiveLine.endTime}
-                </span>
+          <div className="space-y-5">
+            <div className="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-6 sm:p-10 text-center relative overflow-hidden">
+              <div className="text-xs font-mono uppercase tracking-wider text-zinc-500 mb-6">
+                Line {currentActiveLine.id} of {currentSong.lines?.length || 0} ·{' '}
+                {currentActiveLine.startTime} - {currentActiveLine.endTime}
               </div>
 
               {/* Status Pill */}
-              <div className="mb-6 inline-block">
+              <div className="mb-4 inline-block">
                 {currentActiveLine.isInstrumental ? (
-                  <span className="px-3 py-1 rounded-full text-xs font-mono uppercase bg-slate-800 text-slate-300 border border-slate-700">
-                    [INSTRUMENTAL SECTION]
+                  <span className="px-2.5 py-0.5 rounded text-xs font-mono uppercase bg-zinc-800 text-zinc-400 border border-zinc-700">
+                    Instrumental Section
                   </span>
                 ) : (
-                  <span className="px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
-                    Now Singing
+                  <span className="px-2.5 py-0.5 rounded text-xs font-medium bg-zinc-800/80 text-zinc-300 border border-zinc-700/60">
+                    Active Verse
                   </span>
                 )}
               </div>
 
               {/* Big Telugu Lyrics Display */}
-              <div className="font-['Noto_Sans_Telugu',sans-serif] text-2xl sm:text-4xl md:text-5xl font-extrabold text-amber-400 tracking-wide leading-tight mb-4 drop-shadow-md">
+              <div className="font-['Noto_Sans_Telugu',sans-serif] text-2xl sm:text-4xl md:text-5xl font-bold text-zinc-100 tracking-wide leading-tight mb-3">
                 {currentActiveLine.telugu || '[No lyrics active]'}
               </div>
 
               {/* Romanized Telugu Display */}
-              <div className="text-lg sm:text-2xl text-slate-200 font-medium tracking-normal mb-6">
+              <div className="text-base sm:text-xl text-zinc-400 font-medium tracking-normal mb-5">
                 {currentActiveLine.romanized}
               </div>
 
               {/* English Meaning Box */}
               {!currentActiveLine.isInstrumental && currentActiveLine.englishMeaning && (
-                <div className="max-w-xl mx-auto p-4 rounded-xl bg-slate-950/70 border border-slate-800 text-sm text-slate-300">
-                  <div className="text-xs uppercase font-bold text-amber-500 mb-1 tracking-wider">
-                    English Translation & Meaning
+                <div className="max-w-xl mx-auto p-3.5 rounded-lg bg-zinc-950 border border-zinc-800 text-xs text-zinc-300 text-left">
+                  <div className="text-[10px] uppercase font-mono text-zinc-500 mb-1">
+                    English Translation
                   </div>
                   <p>{currentActiveLine.englishMeaning}</p>
                 </div>
@@ -2280,32 +2175,32 @@ export default function App() {
 
               {/* Next line preview */}
               {nextLine && (
-                <div className="mt-8 pt-6 border-t border-slate-800/80 text-left sm:text-center text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-center gap-2">
-                  <span className="text-slate-500 uppercase tracking-wider font-semibold">
-                    Coming Up Next:
+                <div className="mt-8 pt-5 border-t border-zinc-800/80 text-xs text-zinc-500 flex flex-col sm:flex-row items-center justify-center gap-2">
+                  <span className="uppercase tracking-wider font-mono text-[10px]">
+                    Coming Up:
                   </span>
-                  <span className="font-['Noto_Sans_Telugu'] font-semibold text-slate-300">
+                  <span className="font-['Noto_Sans_Telugu'] text-zinc-300 font-medium">
                     {nextLine.telugu}
                   </span>
-                  <span className="text-slate-500">({nextLine.romanized})</span>
+                  <span className="text-zinc-500">({nextLine.romanized})</span>
                 </div>
               )}
             </div>
 
-            {/* Quick Line Navigator Pills */}
-            <div className="flex flex-wrap items-center justify-center gap-2">
+            {/* Quick Line Navigator */}
+            <div className="flex flex-wrap items-center justify-center gap-1.5">
               {currentSong.lines?.map((l) => (
                 <button
                   key={l.id}
                   onClick={() => jumpToLine(l)}
-                  className={`px-3 py-2 rounded-xl text-xs font-mono transition-all cursor-pointer flex items-center gap-2 border ${
+                  className={`px-2.5 py-1 rounded text-xs font-mono transition cursor-pointer flex items-center gap-1.5 border ${
                     l.id === activeLineId
-                      ? 'bg-amber-500 text-slate-950 font-bold border-amber-400 shadow-lg shadow-amber-500/20 scale-105'
-                      : 'bg-slate-900 border-slate-800 text-slate-300 hover:bg-slate-800'
+                      ? 'bg-zinc-100 text-zinc-950 font-bold border-zinc-100'
+                      : 'bg-zinc-900/80 border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800'
                   }`}
                 >
                   <span>Line {l.id}</span>
-                  <span className="text-[10px] opacity-70">({l.startTime})</span>
+                  <span className="text-[10px] opacity-60 tabular-nums">({l.startTime})</span>
                 </button>
               ))}
             </div>
@@ -2314,64 +2209,66 @@ export default function App() {
 
         {/* TAB 3: VOCABULARY & GLOSSARY */}
         {activeTab === 'glossary' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {currentSong.lines
               ?.filter((l) => !l.isInstrumental)
               .map((line) => (
                 <div
                   key={line.id}
                   onClick={() => jumpToLine(line)}
-                  className="p-5 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-amber-500/40 transition cursor-pointer space-y-3"
+                  className="p-4 rounded-xl bg-zinc-900/40 border border-zinc-800/80 hover:border-zinc-700 transition cursor-pointer space-y-2.5"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-mono text-amber-400 font-semibold">
-                      Line {line.id} • {line.startTime} - {line.endTime}
+                    <span className="text-xs font-mono text-zinc-500 tabular-nums">
+                      Line {line.id} · {line.startTime} - {line.endTime}
                     </span>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         jumpToLine(line);
                       }}
-                      className="p-1 rounded-full bg-slate-800 hover:bg-amber-500 hover:text-slate-950 text-slate-400 text-xs"
+                      className="p-1 rounded bg-zinc-800 text-zinc-400 hover:text-white text-xs"
                     >
-                      <Play className="w-3.5 h-3.5 fill-current" />
+                      <Play className="w-3 h-3 fill-current" />
                     </button>
                   </div>
 
                   <div>
-                    <h4 className="font-['Noto_Sans_Telugu'] text-lg font-bold text-white">
+                    <h4 className="font-['Noto_Sans_Telugu'] text-base font-bold text-zinc-100">
                       {line.telugu}
                     </h4>
-                    <p className="text-sm text-amber-300/90 font-medium">
+                    <p className="text-xs text-zinc-400 font-medium">
                       {line.romanized}
                     </p>
                   </div>
 
                   {line.englishMeaning && (
-                    <div className="p-3 bg-slate-950/70 rounded-lg text-xs text-slate-300 border border-slate-800/80">
-                      <strong className="text-slate-400 block mb-1">Contextual Meaning:</strong>
+                    <div className="p-2.5 bg-zinc-950 rounded-lg text-xs text-zinc-300 border border-zinc-800/80">
+                      <strong className="text-zinc-500 block text-[10px] uppercase font-mono mb-0.5">
+                        Translation:
+                      </strong>
                       {line.englishMeaning}
                     </div>
                   )}
 
                   {line.words && line.words.length > 0 && (
-                    <div className="space-y-1.5 pt-1">
-                      <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                        Word by Word Breakdown:
+                    <div className="space-y-1 pt-1">
+                      <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">
+                        Word Breakdown:
                       </span>
                       <div className="grid grid-cols-1 gap-1 text-xs">
                         {line.words.map((w, i) => (
                           <div
                             key={i}
-                            className="flex items-baseline justify-between bg-slate-900/90 px-2.5 py-1 rounded border border-slate-800"
+                            className="flex items-baseline justify-between bg-zinc-950 px-2 py-1 rounded border border-zinc-800/80"
                           >
-                            <span className="font-['Noto_Sans_Telugu'] font-semibold text-amber-200">
+                            <span className="font-['Noto_Sans_Telugu'] text-zinc-200">
                               {w.telugu}{' '}
-                              <span className="font-normal font-sans text-slate-400 text-[11px]">
+                              <span className="font-sans text-zinc-500 text-[11px]">
                                 ({w.romanized})
                               </span>
                             </span>
-                            <span className="text-slate-300 text-[11px]">{w.meaning}</span>
+                            <span className="text-zinc-400 text-[11px]">{w.meaning}</span>
                           </div>
                         ))}
                       </div>
@@ -2381,6 +2278,8 @@ export default function App() {
               ))}
           </div>
         )}
+
+        {/* TAB 4: VOICE PITCH GRAPH */}
         {activeTab === 'pitch' && (
           <VoicePitchGraph
             audioRef={audioRef}
@@ -2420,8 +2319,8 @@ export default function App() {
 
       {/* MODAL: Upload New Song (When a song is already loaded) */}
       {isUploadModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
-          <div className="w-full max-w-lg rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl p-6 relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="w-full max-w-lg rounded-xl bg-zinc-900 border border-zinc-800 shadow-2xl p-6 relative">
             {/* Close button */}
             <button
               onClick={() => {
@@ -2431,25 +2330,25 @@ export default function App() {
                 }
               }}
               disabled={isProcessing}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 rounded-lg cursor-pointer disabled:opacity-40"
+              className="absolute top-4 right-4 text-zinc-500 hover:text-zinc-200 p-1 rounded-lg cursor-pointer disabled:opacity-40"
             >
               ✕
             </button>
 
             <div className="space-y-1 mb-5">
-              <div className="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider">
-                <Sparkles className="w-4 h-4" />
-                <span>Upload New Audio Track</span>
+              <div className="flex items-center gap-2 text-zinc-400 text-xs font-mono">
+                <Music className="w-3.5 h-3.5" />
+                <span>Upload Audio Track</span>
               </div>
-              <h3 className="text-xl font-bold text-white">Transcribe Another Song</h3>
-              <p className="text-xs text-slate-400">
-                Upload your MP3, WAV, or M4A audio file. Gemini AI will analyze the song and generate the synchronized lyrics.
+              <h3 className="text-lg font-semibold text-zinc-100">Transcribe Another Song</h3>
+              <p className="text-xs text-zinc-400">
+                Upload your MP3, WAV, or M4A audio file. Gemini AI will analyze the track in-browser.
               </p>
             </div>
 
             {errorMessage && (
-              <div className="mb-4 p-3.5 rounded-xl bg-red-950/40 border border-red-800/80 text-xs text-red-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                <div className="flex items-start gap-2.5">
+              <div className="mb-4 p-3 rounded-lg bg-red-950/40 border border-red-900/60 text-xs text-red-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div className="flex items-start gap-2">
                   <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
                   <div className="leading-relaxed">{errorMessage}</div>
                 </div>
@@ -2457,7 +2356,7 @@ export default function App() {
                   <button
                     type="button"
                     onClick={handleUploadFile}
-                    className="shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition cursor-pointer flex items-center gap-1.5"
+                    className="shrink-0 px-3 py-1 rounded-md text-xs font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-100 border border-zinc-700 transition cursor-pointer flex items-center gap-1.5"
                   >
                     <RefreshCw className="w-3.5 h-3.5" />
                     <span>Retry</span>
@@ -2467,13 +2366,13 @@ export default function App() {
             )}
 
             {isProcessing ? (
-              <div className="p-6 rounded-xl bg-slate-950/90 border border-amber-500/30 text-center space-y-3 mb-2">
-                <Loader2 className="w-8 h-8 text-amber-400 animate-spin mx-auto" />
-                <div className="text-sm font-bold text-amber-300">
+              <div className="p-6 rounded-lg bg-zinc-950 border border-zinc-800 text-center space-y-3 mb-2">
+                <Loader2 className="w-6 h-6 text-zinc-400 animate-spin mx-auto" />
+                <div className="text-xs font-mono text-zinc-300">
                   {processingStatus || 'Analyzing Audio with Gemini...'}
                 </div>
-                <p className="text-xs text-slate-400">
-                  Transcribing lyrics, isolating instrumental sections, and mapping timestamps in mm:ss.s format.
+                <p className="text-[11px] text-zinc-500">
+                  Transcribing lyrics, isolating instrumental sections, and mapping timestamps.
                 </p>
                 <div className="pt-1">
                   <button
@@ -2482,7 +2381,7 @@ export default function App() {
                       setIsProcessing(false);
                       setProcessingStatus('');
                     }}
-                    className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition cursor-pointer"
+                    className="px-3 py-1 rounded-md text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 transition cursor-pointer"
                   >
                     Cancel
                   </button>
@@ -2492,10 +2391,10 @@ export default function App() {
               <div className="space-y-4">
                 <div
                   onClick={() => fileInputRef.current?.click()}
-                  className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition ${
+                  className={`border border-dashed rounded-xl p-8 text-center cursor-pointer transition ${
                     selectedFile
-                      ? 'border-amber-500/80 bg-amber-500/10'
-                      : 'border-slate-700 hover:border-amber-500/50 hover:bg-slate-800/40'
+                      ? 'border-zinc-500 bg-zinc-950'
+                      : 'border-zinc-800 hover:border-zinc-700 bg-zinc-950/40'
                   }`}
                 >
                   <input
@@ -2510,23 +2409,23 @@ export default function App() {
                     }}
                     className="hidden"
                   />
-                  <div className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center mx-auto mb-3 text-amber-400">
-                    <FileAudio className="w-6 h-6" />
+                  <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center mx-auto mb-2 text-zinc-400">
+                    <FileAudio className="w-5 h-5" />
                   </div>
                   {selectedFile ? (
                     <div>
-                      <p className="text-sm font-bold text-white">{selectedFile.name}</p>
-                      <p className="text-xs text-amber-400 mt-1">
-                        {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB • Click to replace
+                      <p className="text-xs font-medium text-zinc-200">{selectedFile.name}</p>
+                      <p className="text-[11px] text-zinc-500 font-mono mt-0.5">
+                        {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB · Click to replace
                       </p>
                     </div>
                   ) : (
                     <div>
-                      <p className="text-sm font-semibold text-slate-200">
-                        Drop your song here or <span className="text-amber-400 underline">browse</span>
+                      <p className="text-xs text-zinc-300">
+                        Drop audio file here or <span className="text-zinc-100 underline underline-offset-2">browse</span>
                       </p>
-                      <p className="text-xs text-slate-500 mt-1.5">
-                        Supports MP3, WAV, M4A, AAC, FLAC, OGG (up to 30MB)
+                      <p className="text-[11px] text-zinc-500 mt-1">
+                        MP3, WAV, M4A, FLAC, AAC up to 30MB
                       </p>
                     </div>
                   )}
@@ -2542,11 +2441,11 @@ export default function App() {
                     }
                   }}
                   disabled={!selectedFile || isProcessing}
-                  className="w-full py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 transition shadow-lg shadow-amber-500/20 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full py-2.5 rounded-lg font-semibold text-xs bg-zinc-100 hover:bg-white text-zinc-950 transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2"
                 >
-                  <Sparkles className="w-4 h-4 fill-slate-950" />
+                  <Sparkles className="w-3.5 h-3.5" />
                   <span>
-                    {!userApiKey ? 'Enter API Key to Transcribe' : 'Transcribe Lyrics with Gemini AI'}
+                    {!userApiKey ? 'Enter API Key to Transcribe' : 'Transcribe with Gemini AI'}
                   </span>
                 </button>
               </div>
@@ -2557,25 +2456,25 @@ export default function App() {
 
       {/* MODAL: API Key Manager */}
       {isApiKeyModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
-          <div className="w-full max-w-md rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl p-6 relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-xl bg-zinc-900 border border-zinc-800 shadow-2xl p-6 relative">
             <button
               onClick={() => {
                 setIsApiKeyModalOpen(false);
                 setApiKeyError(null);
               }}
-              className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 rounded-lg cursor-pointer"
+              className="absolute top-4 right-4 text-zinc-500 hover:text-zinc-200 p-1 rounded-lg cursor-pointer"
             >
               ✕
             </button>
 
-            <div className="flex items-center gap-2.5 text-amber-400 text-xs font-bold uppercase tracking-wider mb-2">
-              <Key className="w-4 h-4" />
-              <span>Gemini API Key Settings</span>
+            <div className="flex items-center gap-2 text-zinc-400 text-xs font-mono mb-2">
+              <Key className="w-3.5 h-3.5" />
+              <span>Gemini API Key</span>
             </div>
-            <h3 className="text-xl font-bold text-white mb-1">Your Personal API Key</h3>
-            <p className="text-xs text-slate-400 mb-4 leading-relaxed">
-              Your key and audio files stay 100% inside your browser memory. Audio is never sent to any custom server.
+            <h3 className="text-lg font-semibold text-zinc-100 mb-1">Your Personal API Key</h3>
+            <p className="text-xs text-zinc-400 mb-4 leading-relaxed">
+              Your key is stored locally in your browser and used directly for Google Gemini API requests.
             </p>
 
             <form
@@ -2586,7 +2485,7 @@ export default function App() {
               className="space-y-4"
             >
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-medium text-zinc-300 mb-1.5">
                   Google Gemini API Key
                 </label>
                 <div className="relative">
@@ -2598,12 +2497,12 @@ export default function App() {
                       setApiKeyError(null);
                     }}
                     placeholder={userApiKey ? 'Enter new key to update...' : 'AIzaSy...'}
-                    className="w-full bg-slate-950/90 border border-slate-700 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 rounded-xl px-4 py-3 text-xs text-white placeholder-slate-500 outline-none pr-10 font-mono"
+                    className="w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-600 rounded-lg px-3.5 py-2 text-xs text-zinc-100 placeholder-zinc-500 outline-none pr-10 font-mono"
                   />
                   <button
                     type="button"
                     onClick={() => setShowApiKey(!showApiKey)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white cursor-pointer"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-200 cursor-pointer"
                   >
                     {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -2617,25 +2516,25 @@ export default function App() {
               </div>
 
               {userApiKey && (
-                <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800 text-xs flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-slate-300">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span>Current: <span className="font-mono text-emerald-300">{userApiKey.slice(0, 6)}••••••••</span></span>
+                <div className="p-3 rounded-lg bg-zinc-950 border border-zinc-800 text-xs flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-zinc-300">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Active: <span className="font-mono text-zinc-400">{userApiKey.slice(0, 6)}••••••••</span></span>
                   </div>
                   <button
                     type="button"
                     onClick={handleClearApiKey}
-                    className="text-red-400 hover:text-red-300 text-xs font-semibold underline cursor-pointer"
+                    className="text-red-400 hover:text-red-300 text-xs font-medium cursor-pointer"
                   >
-                    Remove Key
+                    Remove
                   </button>
                 </div>
               )}
 
-              <div className="flex items-center justify-between gap-3 pt-2">
+              <div className="flex items-center justify-between gap-2.5 pt-1">
                 <button
                   type="submit"
-                  className="flex-1 py-2.5 px-4 rounded-xl font-bold text-xs bg-amber-500 hover:bg-amber-400 text-slate-950 transition shadow cursor-pointer text-center"
+                  className="flex-1 py-2 px-4 rounded-lg font-semibold text-xs bg-zinc-100 hover:bg-white text-zinc-950 transition cursor-pointer text-center"
                 >
                   Save API Key
                 </button>
@@ -2643,10 +2542,10 @@ export default function App() {
                   href="https://aistudio.google.com/app/apikey"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="py-2.5 px-3 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition cursor-pointer flex items-center gap-1"
+                  className="py-2 px-3 rounded-lg text-xs font-medium bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-white border border-zinc-800 transition cursor-pointer flex items-center gap-1"
                 >
                   <span>Get Free Key</span>
-                  <ExternalLink className="w-3 h-3" />
+                  <ExternalLink className="w-3 h-3 text-zinc-500" />
                 </a>
               </div>
             </form>
@@ -2655,19 +2554,17 @@ export default function App() {
       )}
 
       {/* Footer */}
-      <footer className="border-t border-slate-800/80 bg-slate-950/80 py-6 text-center text-xs text-slate-500">
+      <footer className="border-t border-zinc-800/80 bg-[#09090b] py-5 text-center text-xs text-zinc-500">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p>
-            Universal Telugu & Multilingual Song Lyrics Transcriber • Powered by Gemini AI
+            Telugu & Multilingual Audio Transcriber · Powered by Google Gemini
           </p>
-          <div className="flex items-center gap-4">
-            <span className="text-emerald-400 font-mono text-[11px] flex items-center gap-1">
-              <Check className="w-3 h-3" /> Exact mm:ss.s Timestamps
-            </span>
-            <span className="text-slate-600">|</span>
-            <span>Supports MP3, WAV, M4A Audio Uploads</span>
-            <span className="text-slate-600">|</span>
-            <span>Vercel-Ready</span>
+          <div className="flex items-center gap-3 text-[11px] text-zinc-500">
+            <span>In-Browser Privacy</span>
+            <span>·</span>
+            <span>Decimal Millisecond Timestamps</span>
+            <span>·</span>
+            <span>Multi-Format Export</span>
           </div>
         </div>
       </footer>

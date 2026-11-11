@@ -146,45 +146,45 @@ export function SubtitleConverter() {
   };
 
   return (
-    <div className="rounded-2xl bg-slate-900 border border-slate-800 p-5 sm:p-6 space-y-5">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-4">
+    <div className="rounded-xl bg-zinc-900/50 border border-zinc-800/80 p-5 sm:p-6 space-y-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-800/80 pb-4">
         <div>
-          <h3 className="font-bold text-white text-base flex items-center gap-2">
-            <ArrowRightLeft className="w-4 h-4 text-amber-400" />
+          <h3 className="font-semibold text-zinc-100 text-sm sm:text-base flex items-center gap-2">
+            <ArrowRightLeft className="w-4 h-4 text-zinc-400" />
             <span>Subtitle & Lyric Format Converter Lab</span>
           </h3>
-          <p className="text-xs text-slate-400">
-            Convert existing `.lrc`, `.srt`, or plain lyrics files instantly in your browser without consuming AI tokens.
+          <p className="text-xs text-zinc-400">
+            Convert `.lrc`, `.srt`, or plain lyrics files directly in your browser without consuming AI tokens.
           </p>
         </div>
 
         {/* Format Selectors */}
         <div className="flex items-center gap-2 text-xs">
-          <div className="flex items-center gap-1 bg-slate-950 px-2.5 py-1.5 rounded-xl border border-slate-800">
-            <span className="text-slate-400">From:</span>
+          <div className="flex items-center gap-1.5 bg-zinc-950 px-2.5 py-1.5 rounded-lg border border-zinc-800">
+            <span className="text-zinc-500">From:</span>
             <select
               value={inputFormat}
               onChange={(e) => setInputFormat(e.target.value as any)}
-              className="bg-transparent font-bold text-amber-400 outline-none cursor-pointer"
+              className="bg-transparent font-medium text-zinc-200 outline-none cursor-pointer"
             >
-              <option value="lrc" className="bg-slate-900 text-white">LRC (Synced Lyrics)</option>
-              <option value="srt" className="bg-slate-900 text-white">SRT (Subtitles)</option>
+              <option value="lrc" className="bg-zinc-900 text-zinc-100">LRC (Synced Lyrics)</option>
+              <option value="srt" className="bg-zinc-900 text-zinc-100">SRT (Subtitles)</option>
             </select>
           </div>
 
-          <span className="text-slate-600">→</span>
+          <span className="text-zinc-600">→</span>
 
-          <div className="flex items-center gap-1 bg-slate-950 px-2.5 py-1.5 rounded-xl border border-slate-800">
-            <span className="text-slate-400">To:</span>
+          <div className="flex items-center gap-1.5 bg-zinc-950 px-2.5 py-1.5 rounded-lg border border-zinc-800">
+            <span className="text-zinc-500">To:</span>
             <select
               value={outputFormat}
               onChange={(e) => setOutputFormat(e.target.value as any)}
-              className="bg-transparent font-bold text-emerald-400 outline-none cursor-pointer"
+              className="bg-transparent font-medium text-zinc-200 outline-none cursor-pointer"
             >
-              <option value="srt" className="bg-slate-900 text-white">.SRT Subtitles</option>
-              <option value="lrc" className="bg-slate-900 text-white">.LRC Synced Lyrics</option>
-              <option value="txt" className="bg-slate-900 text-white">.TXT Plain Lyrics</option>
-              <option value="markdown" className="bg-slate-900 text-white">Markdown Table</option>
+              <option value="srt" className="bg-zinc-900 text-zinc-100">.SRT Subtitles</option>
+              <option value="lrc" className="bg-zinc-900 text-zinc-100">.LRC Synced Lyrics</option>
+              <option value="txt" className="bg-zinc-900 text-zinc-100">.TXT Plain Lyrics</option>
+              <option value="markdown" className="bg-zinc-900 text-zinc-100">Markdown Table</option>
             </select>
           </div>
         </div>
@@ -193,7 +193,7 @@ export function SubtitleConverter() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Input box */}
         <div className="space-y-2">
-          <label className="block text-xs font-semibold text-slate-300">
+          <label className="block text-xs font-medium text-zinc-300">
             Input Subtitle Text ({inputFormat.toUpperCase()})
           </label>
           <textarea
@@ -205,13 +205,13 @@ export function SubtitleConverter() {
                 : '1\n00:00:04,200 --> 00:00:08,500\nVeera Veera Ranadheera\n\n2\n00:00:08,500 --> 00:00:12,100\nGundello Dairyam Choodu'
             }
             rows={10}
-            className="w-full bg-slate-950 border border-slate-800 focus:border-amber-400 rounded-xl p-3 text-xs text-white font-mono outline-none resize-none"
+            className="w-full bg-zinc-950 border border-zinc-800 focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 rounded-lg p-3 text-xs text-zinc-100 font-mono outline-none resize-none"
           />
           <button
             onClick={handleConvert}
-            className="w-full py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition cursor-pointer flex items-center justify-center gap-1.5 shadow"
+            className="w-full py-2.5 rounded-lg text-xs font-semibold bg-zinc-100 hover:bg-white text-zinc-950 transition cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
           >
-            <Sparkles className="w-3.5 h-3.5" />
+            <ArrowRightLeft className="w-3.5 h-3.5" />
             <span>Convert to {outputFormat.toUpperCase()}</span>
           </button>
         </div>
@@ -219,21 +219,21 @@ export function SubtitleConverter() {
         {/* Output box */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <label className="block text-xs font-semibold text-slate-300">
+            <label className="block text-xs font-medium text-zinc-300">
               Converted Output ({outputFormat.toUpperCase()})
             </label>
             {convertedText && (
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleCopy}
-                  className="text-xs text-amber-400 hover:text-white flex items-center gap-1 cursor-pointer"
+                  className="text-xs text-zinc-400 hover:text-white flex items-center gap-1 cursor-pointer transition-colors"
                 >
                   {copied ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
-                  <span>{copied ? 'Copied!' : 'Copy'}</span>
+                  <span>{copied ? 'Copied' : 'Copy'}</span>
                 </button>
                 <button
                   onClick={handleDownload}
-                  className="text-xs text-emerald-400 hover:text-white flex items-center gap-1 cursor-pointer"
+                  className="text-xs text-zinc-400 hover:text-white flex items-center gap-1 cursor-pointer transition-colors"
                 >
                   <Download className="w-3 h-3" />
                   <span>Download</span>
@@ -246,7 +246,7 @@ export function SubtitleConverter() {
             readOnly
             placeholder="Converted output will appear here..."
             rows={10}
-            className="w-full bg-slate-950/80 border border-slate-800 rounded-xl p-3 text-xs text-slate-200 font-mono outline-none resize-none"
+            className="w-full bg-zinc-950/80 border border-zinc-800 rounded-lg p-3 text-xs text-zinc-200 font-mono outline-none resize-none"
           />
         </div>
       </div>

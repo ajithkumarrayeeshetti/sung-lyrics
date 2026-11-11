@@ -244,115 +244,114 @@ export function VoicePitchGraph({ audioRef, isPlaying, currentTime }: VoicePitch
   }, [isMicEnabled, isPlaying, currentTime]);
 
   return (
-    <div className="rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl p-5 sm:p-6 space-y-4">
+    <div className="rounded-xl bg-zinc-900/50 border border-zinc-800/80 p-4 sm:p-6 space-y-4">
       {/* Header Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-4">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
-            <Activity className="w-5 h-5 animate-pulse" />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-800/80 pb-4">
+        <div className="space-y-1">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs text-zinc-400">
+            <span className="font-medium text-zinc-200">Pitch Intelligence</span>
+            <span aria-hidden="true" className="text-zinc-600">·</span>
+            <span className="hidden xs:inline">Autocorrelation Engine</span>
+            <span aria-hidden="true" className="text-zinc-600 hidden xs:inline">·</span>
+            <span>C3–C5 Range</span>
           </div>
-          <div>
-            <h3 className="font-bold text-white text-base flex items-center gap-2">
-              <span>Voice Pitch Contour Graph</span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
-                Autocorrelation & Yin Engine
-              </span>
-            </h3>
-            <p className="text-xs text-slate-400">
-              Live fundamental frequency ($f_0$) tracking across the musical scale (C3 - C5).
-            </p>
-          </div>
+          <h3 className="font-semibold text-zinc-100 text-sm sm:text-base">
+            Voice Pitch Contour
+          </h3>
+          <p className="text-xs text-zinc-400 max-w-xl">
+            Tracks fundamental frequency across musical octaves with real-time mic scoring.
+          </p>
         </div>
 
-        {/* Mic Sing-Along Toggle & Pitch Badge */}
-        <div className="flex items-center gap-2.5">
+        {/* Mic Sing-Along Toggle & Pitch Indicator */}
+        <div className="flex flex-col xs:flex-row items-stretch xs:items-center gap-2">
           {currentPitch && (
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-950/70 border border-emerald-800 text-xs font-mono text-emerald-300 shadow">
-              <Music className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="font-bold text-sm text-white">{currentPitch.fullNote}</span>
-              <span className="text-emerald-400/80">({Math.round(currentPitch.pitchHz)} Hz)</span>
+            <div className="flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-950 border border-zinc-700/70 text-xs font-mono text-zinc-200">
+              <Music className="w-3.5 h-3.5 text-zinc-400" />
+              <span className="font-semibold text-white">{currentPitch.fullNote}</span>
+              <span className="text-zinc-400 tabular-nums">({Math.round(currentPitch.pitchHz)} Hz)</span>
             </div>
           )}
 
           <button
             type="button"
             onClick={toggleMic}
-            className={`px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-2 shadow ${
+            className={`w-full xs:w-auto px-4 py-2.5 xs:py-2 rounded-lg text-xs font-medium transition cursor-pointer flex items-center justify-center gap-2 min-h-[40px] xs:min-h-0 ${
               isMicEnabled
-                ? 'bg-red-600 hover:bg-red-500 text-white shadow-red-600/30'
-                : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-600/30'
+                ? 'bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30'
+                : 'bg-zinc-100 hover:bg-white text-zinc-950 font-semibold shadow-sm'
             }`}
           >
-            {isMicEnabled ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
-            <span>{isMicEnabled ? 'Stop Mic Pitch' : 'Enable Sing-Along Mic'}</span>
+            {isMicEnabled ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+            <span>{isMicEnabled ? 'Disable Microphone' : 'Enable Sing-Along Mic'}</span>
           </button>
         </div>
       </div>
 
       {micError && (
-        <div className="p-3 rounded-xl bg-red-950/40 border border-red-800 text-xs text-red-200">
+        <div className="p-3 rounded-lg bg-red-950/30 border border-red-800/60 text-xs text-red-300">
           {micError}
         </div>
       )}
 
       {/* Main Pitch Canvas */}
-      <div className="relative rounded-xl overflow-hidden border border-slate-800 bg-slate-950">
+      <div className="relative rounded-lg overflow-hidden border border-zinc-800 bg-[#09090b]">
         <canvas
           ref={canvasRef}
           width={800}
           height={260}
-          className="w-full h-[220px] sm:h-[260px] block"
+          className="w-full h-[180px] sm:h-[260px] block"
         />
 
         {/* Legend Overlay */}
-        <div className="absolute top-3 right-3 flex items-center gap-3 bg-slate-900/90 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-800 text-[11px]">
-          <div className="flex items-center gap-1.5 text-amber-400">
-            <span className="w-2.5 h-0.5 bg-amber-400 inline-block border-dashed"></span>
-            <span>Song Melody Reference</span>
+        <div className="absolute top-2 right-2 sm:top-3 sm:right-3 flex flex-wrap items-center gap-2 bg-zinc-900/90 backdrop-blur px-2.5 py-1 rounded-md border border-zinc-800 text-[10px] sm:text-[11px] text-zinc-300">
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-0.5 bg-amber-400 inline-block"></span>
+            <span>Song Melody</span>
           </div>
           {isMicEnabled && (
-            <div className="flex items-center gap-1.5 text-emerald-400 font-bold">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-ping"></span>
-              <span>Your Singing Voice</span>
+            <div className="flex items-center gap-1.5 text-emerald-400">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span>
+              <span>Your Voice</span>
             </div>
           )}
         </div>
 
         {/* Feedback Bottom Overlay */}
-        <div className="absolute bottom-2 left-12 right-3 flex items-center justify-between text-xs text-slate-400 bg-slate-900/80 backdrop-blur px-3 py-1 rounded-lg border border-slate-800/80">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span className="text-slate-300 font-medium">{singingFeedback}</span>
+        <div className="absolute bottom-2 left-2 sm:left-12 right-2 sm:right-3 flex items-center justify-between text-xs text-zinc-400 bg-zinc-900/90 backdrop-blur px-2.5 sm:px-3 py-1 rounded-md border border-zinc-800/80">
+          <div className="flex items-center gap-1.5 sm:gap-2 truncate mr-2">
+            <Activity className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+            <span className="text-zinc-300 font-medium truncate text-[11px] sm:text-xs">{singingFeedback}</span>
           </div>
           {vocalScore > 0 && (
-            <div className="flex items-center gap-1.5 text-amber-400 font-mono font-bold">
-              <Trophy className="w-3.5 h-3.5" />
-              <span>Score: {vocalScore}</span>
+            <div className="flex items-center gap-1 text-zinc-200 font-mono font-medium shrink-0 text-[11px] sm:text-xs">
+              <Trophy className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <span>Score: <span className="text-white font-bold tabular-nums">{vocalScore}</span></span>
             </div>
           )}
         </div>
       </div>
 
-      {/* Help / Guide row */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-400">
-        <div className="p-2.5 rounded-xl bg-slate-950/50 border border-slate-800/70 space-y-1">
-          <span className="font-bold text-slate-300 block">🎤 Live Sing-Along</span>
-          <p className="text-[11px] text-slate-500">
-            Click 'Enable Sing-Along Mic' to sing into your microphone and see your real-time vocal pitch curve.
+      {/* Clean 3-Column Info Strip */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs text-zinc-400 pt-1">
+        <div className="p-3 rounded-lg bg-zinc-950/60 border border-zinc-800/80 space-y-1">
+          <span className="font-medium text-zinc-200 block text-xs">Live Sing-Along</span>
+          <p className="text-[11px] text-zinc-400 leading-relaxed">
+            Click 'Enable Sing-Along Mic' to track your vocal performance alongside the original melody.
           </p>
         </div>
 
-        <div className="p-2.5 rounded-xl bg-slate-950/50 border border-slate-800/70 space-y-1">
-          <span className="font-bold text-slate-300 block">🎵 Musical Scale Alignment</span>
-          <p className="text-[11px] text-slate-500">
-            Y-axis automatically tracks standard vocal notes (C3 up to C5), ideal for Indian Carnatic, film, and playback vocals.
+        <div className="p-3 rounded-lg bg-zinc-950/60 border border-zinc-800/80 space-y-1">
+          <span className="font-medium text-zinc-200 block text-xs">Musical Scale Alignment</span>
+          <p className="text-[11px] text-zinc-400 leading-relaxed">
+            Vertical staff maps octaves (C3 to C5) with cents precision for Indian film and classical vocals.
           </p>
         </div>
 
-        <div className="p-2.5 rounded-xl bg-slate-950/50 border border-slate-800/70 space-y-1">
-          <span className="font-bold text-slate-300 block">⚡ Zero Latency</span>
-          <p className="text-[11px] text-slate-500">
-            Processes audio at 60 FPS using normalized autocorrelation directly in your browser.
+        <div className="p-3 rounded-lg bg-zinc-950/60 border border-zinc-800/80 space-y-1">
+          <span className="font-medium text-zinc-200 block text-xs">Zero Latency Audio</span>
+          <p className="text-[11px] text-zinc-400 leading-relaxed">
+            Real-time normalized autocorrelation running at 60 FPS directly on your device.
           </p>
         </div>
       </div>
