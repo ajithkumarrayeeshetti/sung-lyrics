@@ -1,0 +1,6 @@
+{
+  "name": "Telugu Lyrics Transcriber - Veera Veera",
+  "description": "Interactive audio player and precise timestamped Telugu and Romanized lyrics transcription with synchronized playback.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
