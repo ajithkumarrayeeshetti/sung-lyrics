@@ -19,9 +19,14 @@ import {
   FolderOpen,
   Loader2,
   AlertCircle,
-  PlusCircle,
-  X,
   FileAudio,
+  ArrowLeft,
+  Headphones,
+  CheckCircle2,
+  Mic2,
+  Clock,
+  Layers,
+  FileSpreadsheet,
 } from 'lucide-react';
 import {
   DEFAULT_SONG,
@@ -33,38 +38,51 @@ import {
   type LyricLine,
 } from './lyricsData';
 
-const STORAGE_KEY = 'telugu_lyrics_songs_v2';
+const STORAGE_KEY = 'telugu_lyrics_songs_v3';
 
 export default function App() {
-  // Library of songs (starts with DEFAULT_SONG and loads from localStorage)
+  // Library starts empty so the user is greeted by the Upload Page first
   const [songs, setSongs] = useState<SongRecord[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          const hasDefault = parsed.some((s: SongRecord) => s.id === DEFAULT_SONG.id);
-          return hasDefault ? parsed : [DEFAULT_SONG, ...parsed];
+          return parsed;
         }
       }
     } catch (e) {
       console.error('Failed to load songs from localStorage', e);
     }
-    return [DEFAULT_SONG];
+    return [];
   });
 
-  const [activeSongId, setActiveSongId] = useState<string>(DEFAULT_SONG.id);
+  const [activeSongId, setActiveSongId] = useState<string | null>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed[0].id;
+        }
+      }
+    } catch {
+      // ignore
+    }
+    return null;
+  });
 
-  // Active song object
+  // Active song object (null if no song uploaded yet)
   const currentSong = useMemo(() => {
-    return songs.find((s) => s.id === activeSongId) || songs[0] || DEFAULT_SONG;
+    if (!activeSongId) return null;
+    return songs.find((s) => s.id === activeSongId) || null;
   }, [songs, activeSongId]);
 
   // Audio player state
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(currentSong.durationSeconds || 38.56);
+  const [duration, setDuration] = useState(0);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
@@ -76,13 +94,15 @@ export default function App() {
   const [showMeaningInTable, setShowMeaningInTable] = useState(true);
   const [showWordsInTable, setShowWordsInTable] = useState(false);
 
-  // Modal for Transcribing new songs
-  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  // Upload state
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingStatus, setProcessingStatus] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Modal for uploading when a song is already loaded
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
   // Save library to localStorage on update
   useEffect(() => {
@@ -101,10 +121,10 @@ export default function App() {
       setIsPlaying(false);
       audio.currentTime = 0;
       setCurrentTime(0);
-      setDuration(currentSong.durationSeconds || 0);
+      setDuration(currentSong?.durationSeconds || 0);
       setActiveLineId(1);
     }
-  }, [activeSongId]);
+  }, [currentSong]);
 
   // Audio setup and time updates
   useEffect(() => {
@@ -115,7 +135,7 @@ export default function App() {
       const cur = audio.currentTime;
       setCurrentTime(cur);
 
-      const lines = currentSong.lines || [];
+      const lines = currentSong?.lines || [];
       const activeLine = lines.find(
         (line) => cur >= line.startSeconds && cur < line.endSeconds
       );
@@ -257,46 +277,70 @@ export default function App() {
 
     setIsProcessing(true);
     setErrorMessage(null);
-    setProcessingStatus('Reading audio file...');
+    setProcessingStatus('Uploading audio file...');
+
+    // Live elapsed timer
+    const startTime = Date.now();
+    const timerInterval = setInterval(() => {
+      const sec = Math.floor((Date.now() - startTime) / 1000);
+      setProcessingStatus(`Analyzing sung lyrics with Gemini AI (${sec}s)...`);
+    }, 1000);
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 75000); // 75s timeout
 
     try {
       // Local ObjectURL for instantaneous zero-latency playback in browser
       const localAudioUrl = URL.createObjectURL(selectedFile);
 
-      // Convert audio file to Base64 for serverless payload
-      const base64Data = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result as string);
-        reader.onerror = reject;
-        reader.readAsDataURL(selectedFile);
-      });
-
-      setProcessingStatus('Analyzing sung lyrics with Gemini AI...');
-
-      // First attempt /api/transcribe (direct base64 payload, works in Vercel Serverless and Express)
-      let res = await fetch('/api/transcribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          audioBase64: base64Data,
-          mimeType: selectedFile.type || 'audio/mp3',
-          title: selectedFile.name.replace(/\.[^/.]+$/, ''),
-        }),
-      });
-
-      // If /api/transcribe returns 404, fallback to multipart /api/transcribe/upload
-      if (!res.ok && res.status === 404) {
+      // 1. Try FormData upload first (fastest, streams directly to server, handles FFmpeg downsampling)
+      let res: Response | null = null;
+      try {
         const formData = new FormData();
         formData.append('audio', selectedFile);
         res = await fetch('/api/transcribe/upload', {
           method: 'POST',
           body: formData,
+          signal: controller.signal,
         });
+      } catch (uploadFetchErr: any) {
+        if (uploadFetchErr.name === 'AbortError') {
+          throw new Error('Transcription request timed out (75s). Please check your internet connection or verify GEMINI_API_KEY.');
+        }
+        console.warn('FormData upload failed, falling back to JSON base64:', uploadFetchErr);
       }
 
-      if (!res.ok) {
-        const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.error || `Server error (${res.status})`);
+      // 2. If /api/transcribe/upload returned 404 (e.g. on Vercel where only serverless /api/transcribe exists)
+      if (!res || !res.ok) {
+        if (res && res.status !== 404) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error || `Server error (${res.status})`);
+        }
+
+        // Fallback to base64 JSON payload
+        setProcessingStatus('Encoding audio for serverless API...');
+        const base64Data = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(selectedFile);
+        });
+
+        res = await fetch('/api/transcribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            audioBase64: base64Data,
+            mimeType: selectedFile.type || 'audio/mp3',
+            title: selectedFile.name.replace(/\.[^/.]+$/, ''),
+          }),
+          signal: controller.signal,
+        });
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error || `Server error (${res.status})`);
+        }
       }
 
       const data = await res.json();
@@ -327,29 +371,42 @@ export default function App() {
       setSelectedFile(null);
     } catch (err: any) {
       console.error(err);
-      setErrorMessage(err.message || 'Failed to transcribe audio.');
+      if (err.name === 'AbortError') {
+        setErrorMessage('The request timed out. Please verify that your GEMINI_API_KEY is configured in Settings > Secrets and try again.');
+      } else {
+        setErrorMessage(err.message || 'Failed to transcribe audio.');
+      }
     } finally {
+      clearInterval(timerInterval);
+      clearTimeout(timeoutId);
       setIsProcessing(false);
       setProcessingStatus('');
     }
   };
 
+  // Load the demo track if the user wants to test immediately
+  const loadDemoSong = () => {
+    const demo = DEFAULT_SONG;
+    setSongs((prev) => {
+      const exists = prev.some((s) => s.id === demo.id);
+      return exists ? prev : [demo, ...prev];
+    });
+    setActiveSongId(demo.id);
+    setIsUploadModalOpen(false);
+  };
+
   const deleteSong = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    if (id === DEFAULT_SONG.id) {
-      alert("The default sample song cannot be deleted.");
-      return;
-    }
     const filtered = songs.filter((s) => s.id !== id);
     setSongs(filtered);
     if (activeSongId === id) {
-      setActiveSongId(DEFAULT_SONG.id);
+      setActiveSongId(filtered.length > 0 ? filtered[0].id : null);
     }
   };
 
   // Filter lyrics for search
   const filteredLyrics = useMemo(() => {
-    const lines = currentSong.lines || [];
+    const lines = currentSong?.lines || [];
     if (!searchQuery.trim()) return lines;
     const q = searchQuery.toLowerCase();
     return lines.filter(
@@ -363,8 +420,8 @@ export default function App() {
   }, [currentSong, searchQuery]);
 
   const currentActiveLine =
-    currentSong.lines?.find((l) => l.id === activeLineId) ||
-    currentSong.lines?.[0] || {
+    currentSong?.lines?.find((l) => l.id === activeLineId) ||
+    currentSong?.lines?.[0] || {
       id: 1,
       startTime: '00:00.0',
       endTime: '00:00.0',
@@ -375,11 +432,201 @@ export default function App() {
       englishMeaning: '',
     };
 
-  const nextLine = currentSong.lines?.find((l) => l.id === activeLineId + 1);
+  const nextLine = currentSong?.lines?.find((l) => l.id === activeLineId + 1);
 
+  // -------------------------------------------------------------
+  // VIEW 1: UPLOAD LANDING SCREEN (If no song is currently active)
+  // -------------------------------------------------------------
+  if (!currentSong) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-['Plus_Jakarta_Sans',sans-serif] selection:bg-amber-500/30 selection:text-amber-200">
+        {/* Navigation Header */}
+        <header className="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-30">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-600 via-red-600 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-600/20 text-white font-bold">
+                <Flame className="w-5 h-5 animate-pulse" />
+              </div>
+              <div>
+                <span className="text-[10px] uppercase tracking-widest font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                  Telugu & Multilingual AI Transcriber
+                </span>
+                <h1 className="text-base sm:text-lg font-bold text-white tracking-tight">
+                  Song Lyrics & Karaoke Studio
+                </h1>
+              </div>
+            </div>
+
+            {songs.length > 0 && (
+              <button
+                onClick={() => setActiveSongId(songs[0].id)}
+                className="flex items-center gap-1.5 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-2 rounded-xl transition cursor-pointer"
+              >
+                <FolderOpen className="w-4 h-4 text-amber-400" />
+                <span>My Library ({songs.length})</span>
+              </button>
+            )}
+          </div>
+        </header>
+
+        {/* Hero Section & Upload Box */}
+        <main className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 py-12 flex flex-col justify-center space-y-10">
+          <div className="text-center space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Gemini AI Acoustic Transcription</span>
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+              Upload Your Song, <br />
+              <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-red-500 bg-clip-text text-transparent">
+                Get Synced Lyrics & Timestamps
+              </span>
+            </h2>
+            <p className="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto">
+              Upload any MP3, WAV, or M4A audio file. Gemini AI will generate the exact Telugu script, Romanized lyrics, millisecond timestamps, instrumental markers, and synchronized karaoke playback.
+            </p>
+          </div>
+
+          {/* Main Upload Dropzone */}
+          <div className="rounded-2xl bg-gradient-to-b from-slate-900 to-slate-900/60 border border-slate-800 shadow-2xl p-6 sm:p-8 space-y-6">
+            {errorMessage && (
+              <div className="p-4 rounded-xl bg-red-950/40 border border-red-800/80 text-xs text-red-200 flex items-start gap-2.5">
+                <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                <div className="flex-1">{errorMessage}</div>
+              </div>
+            )}
+
+            {isProcessing ? (
+              <div className="py-12 px-6 rounded-2xl bg-slate-950/80 border border-amber-500/30 text-center space-y-4">
+                <Loader2 className="w-10 h-10 text-amber-400 animate-spin mx-auto" />
+                <div className="text-lg font-bold text-amber-300">
+                  {processingStatus || 'Analyzing audio track with Gemini AI...'}
+                </div>
+                <p className="text-xs text-slate-400 max-w-md mx-auto">
+                  Transcribing Telugu phonetics, isolating instrumental sections, and mapping exact mm:ss.s line timestamps.
+                </p>
+                <div className="pt-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsProcessing(false);
+                      setProcessingStatus('');
+                    }}
+                    className="px-4 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  className={`border-2 border-dashed rounded-2xl p-8 sm:p-12 text-center cursor-pointer transition ${
+                    selectedFile
+                      ? 'border-amber-500/80 bg-amber-500/10'
+                      : 'border-slate-700 hover:border-amber-500/50 hover:bg-slate-800/40'
+                  }`}
+                >
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    accept="audio/*,.mp3,.wav,.m4a,.ogg,.webm,.flac,.aac"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files[0]) {
+                        setSelectedFile(e.target.files[0]);
+                        setErrorMessage(null);
+                      }
+                    }}
+                    className="hidden"
+                  />
+                  <div className="w-16 h-16 rounded-2xl bg-slate-800 flex items-center justify-center mx-auto mb-4 text-amber-400 shadow-lg">
+                    <Upload className="w-8 h-8" />
+                  </div>
+                  {selectedFile ? (
+                    <div className="space-y-1">
+                      <p className="text-base font-bold text-white">{selectedFile.name}</p>
+                      <p className="text-xs text-amber-400">
+                        {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB • Click to choose a different audio file
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="space-y-2">
+                      <p className="text-base sm:text-lg font-bold text-slate-200">
+                        Drop your audio file here, or <span className="text-amber-400 underline">browse files</span>
+                      </p>
+                      <p className="text-xs text-slate-500">
+                        Supports MP3, WAV, M4A, AAC, FLAC, OGG (up to 30MB)
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <button
+                    type="button"
+                    onClick={handleUploadFile}
+                    disabled={!selectedFile || isProcessing}
+                    className="w-full sm:w-auto flex-1 py-3.5 px-6 rounded-xl font-bold text-sm bg-gradient-to-r from-amber-500 via-orange-500 to-red-600 hover:from-amber-400 hover:to-red-500 text-slate-950 transition shadow-lg shadow-amber-500/20 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2"
+                  >
+                    <Sparkles className="w-4 h-4 fill-slate-950" />
+                    <span>Transcribe Audio & Generate Lyrics</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={loadDemoSong}
+                    className="w-full sm:w-auto py-3.5 px-5 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap"
+                  >
+                    <Flame className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Try with Demo Song (Veera Veera)</span>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Feature highlights grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs text-slate-300">
+            <div className="p-4 rounded-xl bg-slate-900/50 border border-slate-800 space-y-1.5">
+              <Clock className="w-4 h-4 text-amber-400" />
+              <h4 className="font-bold text-white">Exact mm:ss.s Timestamps</h4>
+              <p className="text-slate-500 text-[11px]">Start and end times for each line down to the decimal second.</p>
+            </div>
+
+            <div className="p-4 rounded-xl bg-slate-900/50 border border-slate-800 space-y-1.5">
+              <Mic2 className="w-4 h-4 text-orange-400" />
+              <h4 className="font-bold text-white">Telugu & Romanized</h4>
+              <p className="text-slate-500 text-[11px]">Read native script along with Latin phonetics to sing along easily.</p>
+            </div>
+
+            <div className="p-4 rounded-xl bg-slate-900/50 border border-slate-800 space-y-1.5">
+              <Headphones className="w-4 h-4 text-red-400" />
+              <h4 className="font-bold text-white">Instrumental Tagging</h4>
+              <p className="text-slate-500 text-[11px]">Automatically identifies solos, beat drops, and marks [INSTRUMENTAL].</p>
+            </div>
+
+            <div className="p-4 rounded-xl bg-slate-900/50 border border-slate-800 space-y-1.5">
+              <Download className="w-4 h-4 text-emerald-400" />
+              <h4 className="font-bold text-white">All Exports Ready</h4>
+              <p className="text-slate-500 text-[11px]">Download .SRT subtitles, .LRC synced lyrics, .TXT, or copy Markdown.</p>
+            </div>
+          </div>
+        </main>
+
+        <footer className="border-t border-slate-800/80 bg-slate-950/80 py-6 text-center text-xs text-slate-500">
+          <p>Universal Telugu & Multilingual Song Lyrics Transcriber • Powered by Gemini AI</p>
+        </footer>
+      </div>
+    );
+  }
+
+  // -------------------------------------------------------------
+  // VIEW 2: FULL SYNCHRONIZED PLAYER & TRANSCRIPTION STUDIO
+  // -------------------------------------------------------------
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-['Plus_Jakarta_Sans',sans-serif] selection:bg-amber-500/30 selection:text-amber-200">
-      {/* Audio element for playback */}
+      {/* Hidden audio element */}
       <audio
         ref={audioRef}
         src={currentSong.audioSrc}
@@ -390,13 +637,20 @@ export default function App() {
       <header className="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
+            <button
+              onClick={() => setActiveSongId(null)}
+              className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition cursor-pointer"
+              title="Upload another song"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
             <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-600 via-red-600 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-600/20 text-white font-bold">
               <Flame className="w-5 h-5 animate-pulse" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-[10px] uppercase tracking-widest font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
-                  Telugu & Multilingual Lyrics Transcriber
+                  Lyrics Studio
                 </span>
                 <span className="text-xs text-slate-500 hidden sm:inline">•</span>
                 <span className="text-xs text-slate-400 hidden sm:inline">
@@ -416,7 +670,7 @@ export default function App() {
 
           {/* Action Buttons & Exports */}
           <div className="flex items-center gap-2">
-            {/* Upload MP3 / Audio Button */}
+            {/* Upload Another Song Button */}
             <button
               onClick={() => {
                 setIsUploadModalOpen(true);
@@ -425,7 +679,7 @@ export default function App() {
               className="flex items-center gap-2 text-xs font-bold bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 px-3.5 py-2 rounded-xl shadow-md shadow-amber-500/20 transition-all cursor-pointer active:scale-95"
             >
               <Upload className="w-4 h-4 text-slate-950" />
-              <span>Upload Audio File</span>
+              <span>Upload Another Song</span>
             </button>
 
             {/* Copy Markdown Table */}
@@ -495,14 +749,14 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main Container */}
+      {/* Main Studio Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 space-y-6">
         
-        {/* Songs Switcher Ribbon */}
+        {/* Songs Switcher Ribbon (If user has multiple songs) */}
         {songs.length > 1 && (
           <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin">
             <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold whitespace-nowrap flex items-center gap-1.5">
-              <FolderOpen className="w-3.5 h-3.5" /> Library ({songs.length}):
+              <FolderOpen className="w-3.5 h-3.5" /> Uploaded Tracks ({songs.length}):
             </span>
             {songs.map((song) => (
               <div
@@ -514,21 +768,15 @@ export default function App() {
                     : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800'
                 }`}
               >
-                {song.sourceType === 'upload' ? (
-                  <FileAudio className="w-3.5 h-3.5 text-amber-400" />
-                ) : (
-                  <Flame className="w-3.5 h-3.5 text-orange-400" />
-                )}
+                <FileAudio className="w-3.5 h-3.5 text-amber-400" />
                 <span>{song.title}</span>
-                {song.id !== DEFAULT_SONG.id && (
-                  <button
-                    onClick={(e) => deleteSong(song.id, e)}
-                    className="text-slate-500 hover:text-red-400 ml-1"
-                    title="Delete song"
-                  >
-                    <X className="w-3 h-3" />
-                  </button>
-                )}
+                <button
+                  onClick={(e) => deleteSong(song.id, e)}
+                  className="text-slate-500 hover:text-red-400 ml-1"
+                  title="Delete track"
+                >
+                  ✕
+                </button>
               </div>
             ))}
           </div>
@@ -545,9 +793,9 @@ export default function App() {
               <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold">
                 <Music className="w-3.5 h-3.5 text-amber-400" />
                 <span>
-                  {songIsUploaded(currentSong)
-                    ? `Uploaded Track: ${currentSong.sourceName || 'Audio File'}`
-                    : 'Original Track • High Energy Action'}
+                  {currentSong.sourceType === 'upload' || currentSong.sourceName
+                    ? `Uploaded: ${currentSong.sourceName || currentSong.title}`
+                    : 'Transcribed Audio Track'}
                 </span>
                 <span className="text-slate-600">•</span>
                 <span className="text-slate-300">{currentSong.language}</span>
@@ -1146,7 +1394,7 @@ export default function App() {
         )}
       </main>
 
-      {/* MODAL: Direct Audio File Upload & Transcription */}
+      {/* MODAL: Upload New Song (When a song is already loaded) */}
       {isUploadModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
           <div className="w-full max-w-lg rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl p-6 relative">
@@ -1161,21 +1409,20 @@ export default function App() {
               disabled={isProcessing}
               className="absolute top-4 right-4 text-slate-400 hover:text-white p-1 rounded-lg cursor-pointer disabled:opacity-40"
             >
-              <X className="w-5 h-5" />
+              ✕
             </button>
 
             <div className="space-y-1 mb-5">
               <div className="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider">
                 <Sparkles className="w-4 h-4" />
-                <span>Gemini Multilingual Audio Transcription</span>
+                <span>Upload New Audio Track</span>
               </div>
-              <h3 className="text-xl font-bold text-white">Upload Audio Track</h3>
+              <h3 className="text-xl font-bold text-white">Transcribe Another Song</h3>
               <p className="text-xs text-slate-400">
-                Upload your MP3, WAV, M4A, or audio track. Gemini AI will analyze the song and generate the synchronized Telugu & Romanized lyrics table.
+                Upload your MP3, WAV, or M4A audio file. Gemini AI will analyze the song and generate the synchronized lyrics.
               </p>
             </div>
 
-            {/* ERROR DISPLAY */}
             {errorMessage && (
               <div className="mb-4 p-3 rounded-xl bg-red-950/40 border border-red-800/80 text-xs text-red-200 flex items-start gap-2.5">
                 <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
@@ -1183,7 +1430,6 @@ export default function App() {
               </div>
             )}
 
-            {/* PROCESSING OVERLAY */}
             {isProcessing ? (
               <div className="p-6 rounded-xl bg-slate-950/90 border border-amber-500/30 text-center space-y-3 mb-2">
                 <Loader2 className="w-8 h-8 text-amber-400 animate-spin mx-auto" />
@@ -1191,8 +1437,20 @@ export default function App() {
                   {processingStatus || 'Analyzing Audio with Gemini...'}
                 </div>
                 <p className="text-xs text-slate-400">
-                  Transcribing lyrics phonetically, separating instrumental sections, and mapping timestamps in mm:ss.s format.
+                  Transcribing lyrics, isolating instrumental sections, and mapping timestamps in mm:ss.s format.
                 </p>
+                <div className="pt-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsProcessing(false);
+                      setProcessingStatus('');
+                    }}
+                    className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
             ) : (
               <div className="space-y-4">
@@ -1223,7 +1481,7 @@ export default function App() {
                     <div>
                       <p className="text-sm font-bold text-white">{selectedFile.name}</p>
                       <p className="text-xs text-amber-400 mt-1">
-                        {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB • Click to choose another file
+                        {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB • Click to replace
                       </p>
                     </div>
                   ) : (
@@ -1256,14 +1514,14 @@ export default function App() {
       <footer className="border-t border-slate-800/80 bg-slate-950/80 py-6 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p>
-            Universal Telugu & Indian Song Lyrics Transcriber • Powered by Gemini AI
+            Universal Telugu & Multilingual Song Lyrics Transcriber • Powered by Gemini AI
           </p>
           <div className="flex items-center gap-4">
             <span className="text-emerald-400 font-mono text-[11px] flex items-center gap-1">
               <Check className="w-3 h-3" /> Exact mm:ss.s Timestamps
             </span>
             <span className="text-slate-600">|</span>
-            <span>Supports MP3, WAV, M4A & Audio Uploads</span>
+            <span>Supports MP3, WAV, M4A Audio Uploads</span>
             <span className="text-slate-600">|</span>
             <span>Vercel-Ready</span>
           </div>
@@ -1271,8 +1529,4 @@ export default function App() {
       </footer>
     </div>
   );
-}
-
-function songIsUploaded(song: SongRecord) {
-  return song.sourceType === 'upload';
 }

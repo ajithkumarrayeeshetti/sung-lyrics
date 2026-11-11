@@ -44,16 +44,17 @@ const upload = multer({
   },
 });
 
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Serve uploaded audio files
 app.use('/uploads', express.static(UPLOADS_DIR));
 
-// Initialize GoogleGenAI
+// Initialize GoogleGenAI with timeout
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
   httpOptions: {
+    timeout: 30000, // 30 second timeout prevents endless retries
     headers: {
       'User-Agent': 'aistudio-build',
     },
@@ -141,7 +142,8 @@ Output your analysis in structured JSON matching the provided schema.`;
     throw new Error('GEMINI_API_KEY is not configured in the environment. Please configure your Gemini API Key in the Settings > Secrets panel in AI Studio.');
   }
 
-  console.log(`[Gemini] Transcribing audio with gemini-3.8-flash, duration: ${totalDurationSec}s...`);
+  console.log(`[Gemini] Starting audio analysis, duration: ${totalDurationSec.toFixed(1)}s, payload size: ${(audioBuffer.length / 1024).toFixed(1)} KB...`);
+  const startTime = Date.now();
 
   const response = await ai.models.generateContent({
     model: 'gemini-3.8-flash',
@@ -165,28 +167,27 @@ Output your analysis in structured JSON matching the provided schema.`;
             items: {
               type: Type.OBJECT,
               properties: {
-                id: { type: Type.INTEGER, description: '1-indexed sequential line number' },
+                id: { type: Type.INTEGER, description: 'Sequential line number' },
                 startTime: { type: Type.STRING, description: 'Start time in mm:ss.s format (e.g. 00:03.8)' },
                 endTime: { type: Type.STRING, description: 'End time in mm:ss.s format (e.g. 00:07.4)' },
                 startSeconds: { type: Type.NUMBER, description: 'Start time in total seconds' },
                 endSeconds: { type: Type.NUMBER, description: 'End time in total seconds' },
-                telugu: { type: Type.STRING, description: 'Native script (Telugu if Telugu song, or original script)' },
+                telugu: { type: Type.STRING, description: 'Native script' },
                 romanized: { type: Type.STRING, description: 'Romanized transliteration' },
                 englishMeaning: { type: Type.STRING, description: 'English translation and meaning' },
                 isInstrumental: { type: Type.BOOLEAN, description: 'True if purely instrumental without lyrics' },
                 isUnclear: { type: Type.BOOLEAN, description: 'True if vocals are unintelligible or uncertain' },
-                notes: { type: Type.STRING, description: 'Contextual notes, cultural references, or idioms' },
+                notes: { type: Type.STRING, description: 'Contextual notes or idioms' },
                 words: {
                   type: Type.ARRAY,
-                  description: 'Word by word breakdown',
+                  description: 'Optional key word meanings',
                   items: {
                     type: Type.OBJECT,
                     properties: {
-                      telugu: { type: Type.STRING, description: 'Native word' },
-                      romanized: { type: Type.STRING, description: 'Romanized word' },
-                      meaning: { type: Type.STRING, description: 'English meaning of the word' },
+                      telugu: { type: Type.STRING },
+                      romanized: { type: Type.STRING },
+                      meaning: { type: Type.STRING },
                     },
-                    required: ['telugu', 'romanized', 'meaning'],
                   },
                 },
               },
@@ -199,8 +200,9 @@ Output your analysis in structured JSON matching the provided schema.`;
     },
   });
 
+  const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
   const rawText = response.text;
-  console.log('[Gemini] Response raw length:', rawText?.length, 'candidates:', response.candidates?.length);
+  console.log(`[Gemini] Response received in ${elapsed}s, text length: ${rawText?.length || 0}`);
   if (!rawText) {
     const candidate = response.candidates?.[0];
     console.error('[Gemini] No text returned. Finish reason:', candidate?.finishReason);
@@ -228,6 +230,8 @@ Output your analysis in structured JSON matching the provided schema.`;
  * Direct base64 audio transcription (compatible with Vercel and local Express)
  */
 app.post('/api/transcribe', async (req: Request, res: Response) => {
+  let tempRawPath = '';
+  let tempCmpPath = '';
   try {
     const { audioBase64, mimeType = 'audio/mp3', duration = 0 } = req.body;
     if (!audioBase64) {
@@ -238,11 +242,26 @@ app.post('/api/transcribe', async (req: Request, res: Response) => {
     const base64Clean = audioBase64.replace(/^data:[^;]+;base64,/, '');
     const audioBuffer = Buffer.from(base64Clean, 'base64');
 
-    const transcription = await transcribeAudioWithGemini(audioBuffer, mimeType, duration);
+    // Save to temp file and downsample to 16kHz mono using FFmpeg for lightning-fast Gemini analysis
+    const uniqueId = `b64_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    tempRawPath = path.join(UPLOADS_DIR, `${uniqueId}_raw.mp3`);
+    tempCmpPath = path.join(UPLOADS_DIR, `${uniqueId}_cmp.mp3`);
+    fs.writeFileSync(tempRawPath, audioBuffer);
+
+    let processedBuffer = audioBuffer;
+    let finalDuration = duration;
+    try {
+      finalDuration = await compressAudio(tempRawPath, tempCmpPath);
+      processedBuffer = fs.readFileSync(tempCmpPath);
+    } catch (cmpErr) {
+      console.warn('FFmpeg compression skipped or failed, using raw buffer:', cmpErr);
+    }
+
+    const transcription = await transcribeAudioWithGemini(processedBuffer, 'audio/mp3', finalDuration);
 
     res.json({
       success: true,
-      duration,
+      duration: finalDuration,
       transcription,
     });
   } catch (err: any) {
@@ -250,6 +269,10 @@ app.post('/api/transcribe', async (req: Request, res: Response) => {
     res.status(500).json({
       error: err.message || 'Failed to transcribe audio.',
     });
+  } finally {
+    // Clean up temporary files
+    if (tempRawPath && fs.existsSync(tempRawPath)) fs.unlink(tempRawPath, () => {});
+    if (tempCmpPath && fs.existsSync(tempCmpPath)) fs.unlink(tempCmpPath, () => {});
   }
 });
 
@@ -288,8 +311,14 @@ app.post('/api/transcribe/upload', upload.single('audio'), async (req: Request, 
     });
   } catch (err: any) {
     console.error('Upload transcription error:', err);
+    let msg = err.message || 'Failed to transcribe uploaded audio.';
+    if (msg.includes('403') || msg.includes('PERMISSION_DENIED') || msg.includes('SCOPE_INSUFFICIENT') || msg.includes('insufficient authentication')) {
+      msg = 'Gemini API authentication failed (403: PERMISSION_DENIED). Please ensure a valid Gemini API key is selected in the Settings > Secrets panel in AI Studio.';
+    } else if (msg.includes('timeout') || msg.includes('TIMED_OUT') || msg.includes('ETIMEDOUT')) {
+      msg = 'Audio transcription timed out after 30 seconds. Please try a shorter track or verify your network connection.';
+    }
     res.status(500).json({
-      error: err.message || 'Failed to transcribe uploaded audio.',
+      error: msg,
     });
   }
 });
@@ -298,7 +327,12 @@ app.post('/api/transcribe/upload', upload.single('audio'), async (req: Request, 
  * GET /api/health
  */
 app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok', service: 'telugu-lyrics-transcriber' });
+  res.json({
+    status: 'ok',
+    service: 'telugu-lyrics-transcriber',
+    hasKey: !!process.env.GEMINI_API_KEY,
+    keyPrefix: process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.substring(0, 4) + '...' : 'none',
+  });
 });
 
 /**

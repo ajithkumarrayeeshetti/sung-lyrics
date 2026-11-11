@@ -3,6 +3,7 @@ import { GoogleGenAI, Type } from '@google/genai';
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY,
   httpOptions: {
+    timeout: 30000,
     headers: {
       'User-Agent': 'aistudio-build',
     },
@@ -116,15 +117,14 @@ Output your analysis in structured JSON matching the provided schema.`;
                   notes: { type: Type.STRING, description: 'Contextual notes, cultural references, or idioms' },
                   words: {
                     type: Type.ARRAY,
-                    description: 'Word by word breakdown',
+                    description: 'Optional key word meanings',
                     items: {
                       type: Type.OBJECT,
                       properties: {
-                        telugu: { type: Type.STRING, description: 'Native word' },
-                        romanized: { type: Type.STRING, description: 'Romanized word' },
-                        meaning: { type: Type.STRING, description: 'English meaning of the word' },
+                        telugu: { type: Type.STRING },
+                        romanized: { type: Type.STRING },
+                        meaning: { type: Type.STRING },
                       },
-                      required: ['telugu', 'romanized', 'meaning'],
                     },
                   },
                 },
@@ -154,8 +154,12 @@ Output your analysis in structured JSON matching the provided schema.`;
     });
   } catch (err: any) {
     console.error('Vercel API error:', err);
+    let msg = err.message || 'Failed to transcribe audio on serverless runtime.';
+    if (msg.includes('403') || msg.includes('PERMISSION_DENIED') || msg.includes('SCOPE_INSUFFICIENT')) {
+      msg = 'Gemini API authentication failed (403: PERMISSION_DENIED). Please check your GEMINI_API_KEY environment variable in Vercel settings.';
+    }
     res.status(500).json({
-      error: err.message || 'Failed to transcribe audio on serverless runtime.',
+      error: msg,
     });
   }
 }
